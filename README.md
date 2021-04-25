@@ -2,7 +2,7 @@
 
 Python script waarmee je servers kan beheren en taken kunt automatiseren.
 
-## Prerequisite
+## Prerequisites
 
 ```bash
 python -m pip install -r requirements.txt
