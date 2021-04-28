@@ -10,7 +10,20 @@ python -m pip install -r requirements.txt
 
 ## Usage
 
-TBD
+```bash
+Script.py
+```
+or
+```bash
+python -m Script
+```
+
+## Documentation
+### pydoc
+
+```bash
+python -m pydoc <scriptname>
+```
 
 
 ## License
