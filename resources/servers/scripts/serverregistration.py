@@ -12,7 +12,7 @@ class ServerRegistration:
             self.serverdatabase -> holds the location of the json server database file.
 
         """
-
+        
         self.serverdatabase = os.path.join("resources", "database", "database.json")
 
     def register_server(self):
@@ -29,6 +29,8 @@ class ServerRegistration:
             A FileNotFoundError gets raised when the json database is missing.
 
         """
+
+        clearScreen()
 
         while True:
 
@@ -59,6 +61,7 @@ class ServerRegistration:
                 
 
             except json.JSONDecodeError:
+
                 clearScreen()
                 print("Serverdatabase.json is empty!")
             
@@ -66,7 +69,7 @@ class ServerRegistration:
                 clearScreen()
                 print("Serverdatabase.json was not found!")
 
-            except ipaddress.AddressValueError as e:
+            except ValueError:
                 clearScreen()
-                print(e)
+                print("Please input a valid ip-address!")
 

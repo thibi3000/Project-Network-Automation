@@ -26,6 +26,8 @@ class InteractiveVagrantBox:
 
         """
 
+        clearScreen()
+
         print(""" The following wizard will allow you to specify certain settings for your Vagrant box.
         Examples: #CPU's, #RAM, Network settings & Provisioning""")
         
@@ -88,7 +90,7 @@ Options: 512, 1024, 2048, 4096: """))
 
                 if choice.lower() == "y":
 
-                    local = int(input("Please enter the local port: "))
+                    local = int(input("Please enter the local port you'd like to forward: "))
                     public = int(input("Please enter the public port: "))
 
                     portforwarddict = {
