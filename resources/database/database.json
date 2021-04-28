@@ -3,6 +3,10 @@
         {
             "server-name": "test",
             "ip-address": "192.1.1.1"
+        },
+        {
+            "server-name": "testje",
+            "ip-address": "2.2.2.2"
         }
     ],
     "vagrantboxes": []
