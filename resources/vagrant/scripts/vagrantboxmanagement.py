@@ -7,10 +7,24 @@ class InteractiveVagrantBox:
 
     def __init__(self):
 
+        """ Constructor: 
+
+            self.interactiveboxlocation -> holds the location of the interactive vagrant folder.
+
+        """
+
         self.interactiveboxlocation = os.path.join("resources", "database", "vagrant", "interactive")
 
     def ask_for_options(self):
 
+        """ Method: This method will ask you to input several configuration options for your Vagrant box.
+
+            Each input is nested inside an endless loop, the loop will only break when the input is right.
+
+            cpu and ram expect an Integer as input, any other input will raise a Valuerror and clear your screen.
+            ip expects a valid ip-address as input, any other input will raise a Valuerror and clear your screen.
+
+        """
 
         print(""" The following wizard will allow you to specify certain settings for your Vagrant box.
         Examples: #CPU's, #RAM, Network settings & Provisioning""")

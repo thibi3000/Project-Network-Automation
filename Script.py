@@ -4,16 +4,32 @@ from resources.globalscripts.clearscreen import clearScreen
 
 class MainMenu:
 
+    
     def __init__(self):
+
+        """ Constructor: We don't need any attributes in this class (for now). """
+        
         pass
 
     def show_menu(self):
 
-        
-        try:
+        """ Method: This method will clear your screen, start an endless loop, show you a list of options
+            and will keep running untill you enter a certain option.
+            Depending on your choice it will create a new class object from another script or exit.
 
-            while True:
-                clearScreen()
+            1, 2, 3, 4, 5, 6 -> Valid options
+
+            6 will exit the script.
+
+            Any other input will raise a Valuerror and clear your screen.
+        """
+
+        clearScreen()
+
+        while True:
+
+            try:
+                   
                 print("""
     Select one of the following options:
     1) Register server
@@ -34,7 +50,7 @@ class MainMenu:
 
                     else:
                 
-                        raise ValueError('Please pick a valid option!')
+                        raise ValueError
                 
                 else:
 
@@ -48,11 +64,11 @@ class MainMenu:
                         interactivevagrantbox = InteractiveVagrantBox()
                         interactivevagrantbox.ask_for_options()
 
+            except ValueError:
 
-        except ValueError as e:
-
-            print(e)
-
+                clearScreen()
+                print("Please enter a valid option!")
+                
 
 if __name__ == '__main__':
     MainMenu().show_menu()
