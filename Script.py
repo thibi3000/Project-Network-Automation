@@ -1,4 +1,6 @@
 from resources.servers.scripts.serverregistration import ServerRegistration
+from resources.vagrant.scripts.vagrantboxmanagement import InteractiveVagrantBox
+from resources.globalscripts.clearscreen import clearScreen
 
 class MainMenu:
 
@@ -11,7 +13,7 @@ class MainMenu:
         try:
 
             while True:
-
+                clearScreen()
                 print("""
     Select one of the following options:
     1) Register server
@@ -40,6 +42,11 @@ class MainMenu:
 
                         serverreg = ServerRegistration()
                         serverreg.register_server()
+                    
+                    elif choice == 2:
+
+                        interactivevagrantbox = InteractiveVagrantBox()
+                        interactivevagrantbox.ask_for_options()
 
 
         except ValueError as e:

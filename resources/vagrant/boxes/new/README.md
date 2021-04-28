@@ -1,1 +1,0 @@
-Hier komen alle Python scripts voor serverbeheer.

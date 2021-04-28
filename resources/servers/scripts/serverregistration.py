@@ -7,7 +7,7 @@ class ServerRegistration:
 
     def __init__(self):
 
-        self.serverdatabase = os.path.join("resources", "servers", "database", "serverdatabase.json")
+        self.serverdatabase = os.path.join("resources", "database", "database.json")
 
     def register_server(self):
 
@@ -43,7 +43,7 @@ class ServerRegistration:
                 clearScreen()
                 print("Serverdatabase.json is empty!")
 
-            except ValueError:
+            except ipaddress.AddressValueError as e:
                 clearScreen()
-                print("Please input a valid IPv4 address!")
+                print(e)
 

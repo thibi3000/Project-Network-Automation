@@ -1,1 +1,0 @@
-Hier komen de preconfigured Vagrant boxes.

@@ -1,0 +1,9 @@
+{
+    "servers": [
+        {
+            "server-name": "test",
+            "ip-address": "192.1.1.1"
+        }
+    ],
+    "vagrantboxes": []
+}
