@@ -23,6 +23,12 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
+### Install Vagrant
+
+Vagrant 1.4 or greater (currently tested with 1.7.2). Using the latest version of Vagrant is strongly recommended.
+
+[Download here](https://www.vagrantup.com/downloads)
+
 ## Usage
 
 ```bash
