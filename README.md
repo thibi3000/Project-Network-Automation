@@ -1,7 +1,7 @@
 # Project Network Automation 1
 
 Python script to manage servers and automate tasks.
-Works op Windows, Linux & macOS.
+Works on Windows, Linux & macOS.
 
 ![Script](https://user-images.githubusercontent.com/23398694/116447187-3c22f380-a847-11eb-98fa-29089c0b5e81.png)
 
