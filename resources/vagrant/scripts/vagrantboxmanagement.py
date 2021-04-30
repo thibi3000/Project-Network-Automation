@@ -244,7 +244,7 @@ Options: 512, 1024, 2048, 4096: """))
             print('')
 
 
-    def apply_config_file_settings(self):
+        '''    def apply_config_file_settings(self):
 
 
         contents = f"""
@@ -255,12 +255,10 @@ Options: 512, 1024, 2048, 4096: """))
 
     config.vm.hostname = '{self.interactiveboxname}'
     config.vm.network "private_network", ip: "{self.ip}"
-    config.vm.network "forwarded_port", guest: {self.portforwarddict['local']}}, host: {self.portforwarddict['public']}
-   
-
-    """
+    config.vm.network "forwarded_port", guest: {self.portforwarddict["local"]}}, host: {self.portforwarddict["public"]}
+            """
         #with open(os.path.join(self.interactiveboxlocation, 'Vagrantfile')) as VagrantFile:
-            
+            '''
 
 
 
