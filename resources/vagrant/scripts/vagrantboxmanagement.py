@@ -243,6 +243,9 @@ Options: 512, 1024, 2048, 4096: """))
 
             print('')
 
+        except Exception as e:
+
+            print(e)
 
         '''    def apply_config_file_settings(self):
 
