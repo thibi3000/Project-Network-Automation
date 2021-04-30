@@ -17,7 +17,7 @@ Works op Windows, Linux & macOS.
 python -m pip install --upgrade pip
 ```
 
-### PIP install requirements.txt
+### Install requirements
 
 ```bash
 python -m pip install -r requirements.txt
