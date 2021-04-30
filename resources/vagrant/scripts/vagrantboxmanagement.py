@@ -233,18 +233,36 @@ Options: 512, 1024, 2048, 4096: """))
 
         try:
 
-
             os.chdir(self.allinteractiveboxes)
             os.mkdir(self.interactiveboxname)
             os.chdir(self.interactiveboxname)
             v = vagrant.Vagrant(quiet_stdout=False, quiet_stderr=False)
             v.init(self.interactiveboximage)
 
-
-
         except OSError:
 
             print('')
+
+
+    def apply_config_file_settings(self):
+
+
+        contents = f"""
+  config.vm.provider "virtualbox" do |v|
+    v.memory = {self.ram}
+    v.cpus = {self.cpu}
+
+
+    config.vm.hostname = '{self.interactiveboxname}'
+    config.vm.network "private_network", ip: "{self.ip}"
+    config.vm.network "forwarded_port", guest: {self.portforwarddict['local']}}, host: {self.portforwarddict['public']}
+   
+
+    """
+        #with open(os.path.join(self.interactiveboxlocation, 'Vagrantfile')) as VagrantFile:
+            
+
+
 
 
 
