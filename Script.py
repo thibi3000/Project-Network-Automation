@@ -63,6 +63,7 @@ class MainMenu:
 
                         interactivevagrantbox = InteractiveVagrantBox()
                         interactivevagrantbox.ask_for_options()
+                        interactivevagrantbox.create_interactive_box()
 
             except ValueError:
 

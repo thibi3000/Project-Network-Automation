@@ -150,5 +150,7 @@ Thumbs.db
 # profiling data
 .prof
 
+Vagrant
+
 
 # End of https://www.toptal.com/developers/gitignore/api/python
