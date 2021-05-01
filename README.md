@@ -36,7 +36,7 @@ Vagrant 1.4 or greater (currently tested with 1.7.2). Using the latest version o
 Must be installed on its own.
 [Download here](https://www.virtualbox.org/wiki/Downloads)
 
-#### VMware - Requires a license
+#### VMware
 
 Requires a license. Read more about it [here](https://www.vagrantup.com/docs/providers/vmware/installation).
 
