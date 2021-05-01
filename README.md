@@ -11,6 +11,12 @@ Works on Windows, Linux & macOS.
 
 [Download here](https://www.python.org/downloads/)
 
+### Clone the repository
+
+```bash
+git clone https://github.com/thibi3000/Project-Network-Automation.git
+```
+
 ### Create a new virtual environment in the project folder
 
 Highly recommended!
