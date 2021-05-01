@@ -11,6 +11,28 @@ Works on Windows, Linux & macOS.
 
 [Download here](https://www.python.org/downloads/)
 
+### Create a new virtual environment in the project folder
+
+Highly recommended!
+
+```bash
+python -m venv venv
+```
+
+### Activate venv
+
+#### Windows
+
+```bash
+activate.bat
+```
+
+#### Linux & macOS
+
+```bash
+source venv/bin/activate
+```
+
 ### Update to the latest PIP version
 
 ```bash
