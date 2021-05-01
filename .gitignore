@@ -150,7 +150,9 @@ Thumbs.db
 # profiling data
 .prof
 
-Vagrant
+.vagrant
+shared
+Vagrantfile
 
 *.sh
 
