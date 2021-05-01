@@ -239,10 +239,6 @@ Options: 512, 1024, 2048, 4096: """))
             v = vagrant.Vagrant(quiet_stdout=False, quiet_stderr=False)
             v.init(self.interactiveboximage)
 
-        except OSError:
-
-            print('')
-
         except Exception as e:
 
             print(e)
