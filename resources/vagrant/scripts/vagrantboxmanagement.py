@@ -3,6 +3,7 @@ import os
 import ipaddress
 import requests
 import json
+import inspect
 from resources.globalscripts.clearscreen import clearScreen
 
 class InteractiveVagrantBox:
@@ -14,7 +15,6 @@ class InteractiveVagrantBox:
             self.interactiveboxlocation -> holds the location of the interactive vagrant folder.
 
         """
-
 
         self.serverdatabase = os.path.join("resources", "database", "database.json")
         self.allinteractiveboxes = os.path.join("resources", "database", "vagrant", "interactive")
@@ -31,6 +31,9 @@ class InteractiveVagrantBox:
         self.provisionfilecontents = None
         self.provisionfilelocation = None
 
+        self.header = " - Create Vagrant Box (interactive) - "
+        self.error = ""
+
 
     def ask_for_options(self):
 
@@ -45,26 +48,35 @@ class InteractiveVagrantBox:
 
         clearScreen()
 
-        print(""" The following wizard will allow you to specify certain settings for your Vagrant box.
-        Examples: #CPU's, #RAM, Network settings & Provisioning""")
+        print(inspect.cleandoc(f"""
+                        {self.header}
+                        {self.error}
+                        The following wizard will ask your for a few settings to configure your Vagrant box"""))
 
         while True:
 
             self.interactiveboximage = input("""Please enter a valid Vagrant image: """)
             if self.check_vagrant_image(self.interactiveboximage):
-
+                print(self.header)
                 break
+            else:
+                print(self.error)
+            
         
         
         while True:
 
-            self.interactiveboxname = input('Please enter a name for your Vagrant box: ')
+            self.interactiveboxname = input("Please enter a name for your Vagrant box: ")
+
             boxnames = []
             valid = True
-            with open(self.serverdatabase,'r') as serverdatabase:
+
+            with open(self.serverdatabase,"r") as serverdatabase:
+
                 data = json.load(serverdatabase)
-                for box in data['vagrantboxes']:
-                    boxnames.append(box['name'])
+
+                for box in data["vagrantboxes"]:
+                    boxnames.append(box["name"])
             
             for name in boxnames:
 
@@ -73,14 +85,16 @@ class InteractiveVagrantBox:
                         
             if valid == True:
 
-                print('Valid name!')
+                print("Valid name!")
+
                 self.interactiveboxlocation = os.path.join("resources", "database", "vagrant", "interactive", self.interactiveboxname)
+
                 break
 
             else:
 
                 clearScreen()
-                print('This name is already in use! Please pick another one!')
+                print("This name is already in use! Please pick another one!")
             
            
 
@@ -99,6 +113,7 @@ Options: 1, 2, 3, 4: """))
                 break
             
             except ValueError:
+
                 clearScreen()
                 print("Please input a valid CPU option!")
             
@@ -117,6 +132,7 @@ Options: 512, 1024, 2048, 4096: """))
                 break
             
             except ValueError:
+
                 clearScreen()
                 print("Please input a valid RAM option!")
         
@@ -154,7 +170,7 @@ Options: 512, 1024, 2048, 4096: """))
                         except ValueError:
                             
                             clearScreen()
-                            print('Please input a valid local port!')
+                            print("Please input a valid local port!")
 
 
 
@@ -168,7 +184,7 @@ Options: 512, 1024, 2048, 4096: """))
                         except ValueError:
                             
                             clearScreen()
-                            print('Please input a valid public port!')
+                            print("Please input a valid public port!")
 
                     self.portforwarddict = {
                         
@@ -187,13 +203,13 @@ Options: 512, 1024, 2048, 4096: """))
 
                 else:
 
-                    raise ValueError('Please input y or n!')
+                    raise ValueError("Please input y or n!")
             
             
             except ValueError:
 
                 clearScreen()
-                print('Please input y or n!')
+                print("Please input y or n!")
 
         
         while True:
@@ -202,9 +218,9 @@ Options: 512, 1024, 2048, 4096: """))
 
                 self.provisionfilelocation = input("Please specify the path of the provision file (.sh) or (.ps1): ")
 
-                with open(self.provisionfilelocation, 'r') as pvf:
+                with open(self.provisionfilelocation, "r") as pvf:
 
-                    print(f'{self.provisionfilelocation} was found!')
+                    print(f"{self.provisionfilelocation} was found!")
                     self.provisionfilecontents = pvf.readlines()
                     clearScreen()
                     break
@@ -212,7 +228,7 @@ Options: 512, 1024, 2048, 4096: """))
             except FileNotFoundError:
 
                 clearScreen()
-                print(f'Unable to find {provisionfilelocation}')
+                print(f"Unable to find {provisionfilelocation}")
         
 
         self.write_to_database(self.interactiveboxname, self.interactiveboximage, self.interactiveboxlocation, self.cpu, self.ram, self.ip, self.portforwarddict, self.provisionfilelocation)
@@ -334,45 +350,45 @@ Options: 512, 1024, 2048, 4096: """))
     def check_vagrant_image(self, image):
 
         try:
-  
+            
             user = image.split('/')[0]
             os = image.split('/')[1]
 
         except IndexError:
 
-            print('This image name is not valid! Example: ubuntu/trusty64')
+            self.error = '* Error: This image name is not valid! Example: ubuntu/trusty64'
 
             return False
         
         try:
 
             r = requests.get(f'https://app.vagrantup.com/{user}/boxes/{os}')
+            r.raise_for_status()
 
             if r.status_code == 200:
 
                 clearScreen()
-                print('This is a valid image!')
-
                 return True
-
-            else:
-                
-                clearScreen()
-                print('This image is not valid!')
-
-                return False
         
         except requests.HTTPError as e:
 
             clearScreen()
-            print(e)
+            self.error = e
             return False
 
         except requests.ConnectionError as e:
 
             clearScreen()
-            print(e)
+            self.error = e
             return False
+        
+        except requests.exceptions.HTTPError:
+
+            clearScreen()
+            self.error = '* Error: This image name is not valid! Example: ubuntu/trusty64'
+            return False
+
+
 
     
     def write_to_database(self, name, image, location, cpu, ram, ip, portforward, provision):

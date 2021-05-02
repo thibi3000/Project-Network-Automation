@@ -1,3 +1,4 @@
+import inspect
 from resources.servers.scripts.serverregistration import ServerRegistration
 from resources.vagrant.scripts.vagrantboxmanagement import InteractiveVagrantBox
 from resources.globalscripts.clearscreen import clearScreen
@@ -9,7 +10,8 @@ class MainMenu:
 
         """ Constructor: We don't need any attributes in this class (for now). """
         
-        pass
+        self.header = " - Project Network Automation 1 - "
+        self.error = ""
 
     def show_menu(self):
 
@@ -24,28 +26,34 @@ class MainMenu:
             Any other input will raise a Valuerror and clear your screen.
         """
 
-        clearScreen()
+        
 
         while True:
 
             try:
-                   
-                print("""
-    Select one of the following options:
-    1) Register server
-    2) Vagrant box management
-    3) Remote execution
-    4) Remote hosts monitoring
-    5) Setup predefined Vagrant box
-    6) Quit
-        """)
 
-                choice = int(input('Enter your choice: '))
+                clearScreen()
                 
-                if choice not in range(1,6) or choice == '':
+                print(inspect.cleandoc(f"""
+                        {self.header}
+                        {self.error}
+                        Select one of the following options:
+                        1) Register server
+                        2) Vagrant box management
+                        3) Remote execution
+                        4) Remote hosts monitoring
+                        5) Setup predefined Vagrant box
+                        6) Quit
+                        """))
+
+                choice = int(input("Enter your choice: "))
+                
+                if choice not in range(1,6) or choice == "":
 
                     if choice == 6:
                         
+                        clearScreen()
+
                         exit("Bye!")
 
                     else:
@@ -61,14 +69,72 @@ class MainMenu:
                     
                     elif choice == 2:
 
-                        interactivevagrantbox = InteractiveVagrantBox()
-                        interactivevagrantbox.ask_for_options()
-                        interactivevagrantbox.create_interactive_box()
+                        vagrantboxmanagementsubmenu = VagrantBoxManagementSubMenu()
+                        vagrantboxmanagementsubmenu.show_menu()
 
             except ValueError:
 
                 clearScreen()
-                print("Please enter a valid option!")
+                self.error = "* Error: Please enter a valid option!"
+
+
+
+
+class VagrantBoxManagementSubMenu():
+
+    def __init__(self):
+
+        self.header = " - Vagrant Box Management - "
+        self.error = ""
+
+    def show_menu(self):
+
+        while True:
+
+            clearScreen()
+
+            try:
+
+                print(inspect.cleandoc(f"""
+                        {self.header}
+                        {self.error}
+                        Select one of the following options:
+                        1) Create Vagrant box (interactive)
+                        2) Manage existing boxes
+                        3) Return to main menu
+                        """))
+                
+                choice = int(input("Enter your choice: "))
+                
+                if choice not in [1,2] or choice == "":
+
+                    if choice == 3:
+                        
+                        return
+
+                    else:
+                
+                        raise ValueError
+                
+                else:
+
+                    if choice == 1:
+
+                        interactivevagrantbox = InteractiveVagrantBox()
+                        interactivevagrantbox.ask_for_options()
+                        interactivevagrantbox.create_interactive_box()
+                    
+                    elif choice == 2:
+
+                        vagrantboxmanagementsubmenu = VagrantBoxManagementSubMenu()
+                        vagrantboxmanagementsubmenu.show_menu()
+
+
+            except ValueError:
+
+                clearScreen()
+                self.error = "* Error: Please enter a valid option!"  
+                         
                 
 
 if __name__ == '__main__':

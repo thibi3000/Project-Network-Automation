@@ -14,6 +14,8 @@ class ServerRegistration:
         """
         
         self.serverdatabase = os.path.join("resources", "database", "database.json")
+        self.header = " - Server Registration - "
+        self.error = ""
 
     def register_server(self):
 
@@ -30,46 +32,70 @@ class ServerRegistration:
 
         """
 
-        clearScreen()
-
         while True:
 
             try:
-                
-                servername = input('Please specify the server name: ')
-                serverip = ipaddress.ip_address(input("""Please specify the server ip (Example: 192.168.1.1): """)) 
 
+                clearScreen()
+                
+                print(self.header)
+                print(self.error)
+
+                servername = input("Please specify the server name: ")
+                serverip = str(ipaddress.ip_address(input("Please specify the server ip (Example: 192.168.1.1): ")))
+                
                 serverdictionary = {
+
                     "server-name": servername,
-                    "ip-address": str(serverip)
+                    "ip-address": serverip
                 }
 
-                with open(self.serverdatabase, 'r') as serverdatabase:
+                with open(self.serverdatabase, "r") as serverdatabase:
                     
                     databasecontents = json.load(serverdatabase)
                     
-                    serverlist = databasecontents['servers']
-                    serverlist.append(serverdictionary)
+                    serverlist = databasecontents["servers"]
                     
-                
-                with open(self.serverdatabase, 'w') as serverdatabase:
+                    for server in serverlist:
+
+                        if server["server-name"] == servername:
+                            
+                            serverdatabase.close()
+                            raise Exception("* Error: This name is already in use!")
+
+                    serverlist.append(serverdictionary)
+
+                    serverdatabase.close()
+                    
+                with open(self.serverdatabase, "w") as serverdatabase:
 
                     json.dump(databasecontents, serverdatabase)
+
+                    serverdatabase.close()
                 
                 clearScreen()
+
                 break
                 
 
             except json.JSONDecodeError:
 
                 clearScreen()
-                print("Serverdatabase.json is empty!")
+                self.error = "* Error: Serverdatabase.json is empty!"
             
             except FileNotFoundError:
+
                 clearScreen()
-                print("Serverdatabase.json was not found!")
+                self.error = "* Error: Serverdatabase.json was not found!"
 
             except ValueError:
+
                 clearScreen()
-                print("Please input a valid ip-address!")
+                self.error = "* Error: This IPv4-address is not valid!"
+            
+            except Exception as namealreadyindb:
+                
+                clearScreen()
+                self.error = namealreadyindb
+
 
