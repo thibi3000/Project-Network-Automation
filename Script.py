@@ -1,6 +1,7 @@
 import inspect
 from resources.servers.scripts.serverregistration import ServerRegistration
-from resources.vagrant.scripts.vagrantboxmanagement import InteractiveVagrantBox
+from resources.vagrant.scripts.vagrantboxcreation import InteractiveVagrantBox
+from resources.vagrant.scripts.vagrantboxmanagement import VagrantBoxManagement
 from resources.globalscripts.clearscreen import clearScreen
 
 class MainMenu:
@@ -91,7 +92,7 @@ class VagrantBoxManagementSubMenu():
 
         while True:
 
-            clearScreen()
+            #clearScreen()
 
             try:
 
@@ -123,18 +124,20 @@ class VagrantBoxManagementSubMenu():
                         interactivevagrantbox = InteractiveVagrantBox()
                         interactivevagrantbox.ask_for_options()
                         interactivevagrantbox.create_interactive_box()
-                    
+                        interactivevagrantbox.apply_config_file_settings()
+                        
                     elif choice == 2:
-
-                        vagrantboxmanagementsubmenu = VagrantBoxManagementSubMenu()
-                        vagrantboxmanagementsubmenu.show_menu()
-
+                        
+                        vagrantboxmanagement = VagrantBoxManagement()
+                        vagrantboxmanagement.show_menu()
+                        
 
             except ValueError:
 
                 clearScreen()
                 self.error = "* Error: Please enter a valid option!"  
                          
+
                 
 
 if __name__ == '__main__':
