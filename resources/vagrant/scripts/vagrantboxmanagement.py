@@ -11,6 +11,7 @@ class VagrantBoxManagement:
         self.header = " - Configured Vagrant boxes - "
         self.error = ""
 
+        self.mainpath = os.getcwd()
         self.serverdatabase = os.path.join("resources", "database", "database.json")
         self.allinteractiveboxes = os.path.join("resources", "database", "vagrant", "interactive")
 
@@ -28,20 +29,55 @@ class VagrantBoxManagement:
             if len(data["vagrantboxes"]) == 0:
 
                 print("No boxes have been configured (yet).")
-                return 
+                return
+
             else:
 
-                """for box in data["vagrantboxes"]:
+                for box in data["vagrantboxes"]:
 
-                    
                     path = box["location"]
+                    name = box["name"]
+
                     boxpath = os.path.join(os.getcwd(), path)
                     os.chdir(boxpath)
-                    print(os.getcwd())
-                    v = vagrant.Vagrant(quiet_stdout=False, quiet_stderr=False)
-                    print()
-                    """
+
+                    v = vagrant.Vagrant(root=os.getcwd())
+                    status = v.status()[0]
+
+                    print(f"Name: {name}")
+                    print(f"Status: {status.state}")
+                    print(f"Provider: {status.provider}")
+                    print("-------------------------------")
+                    os.chdir(self.mainpath)
+
+                while True:
+
+                    print("Please input machine name and action.\nFor example: boxname-[start, suspend, stop, resume, destroy]")
+
+                    choice = input("")
+
         return
+
+    
+    def start_box(self):
+
+        pass 
+
+    def suspend_box(self):
+
+        pass
+
+    def stop_box(self):
+
+        pass
+
+    def resume_box(self):
+
+        pass
+
+    def destroy_box(self):
+
+        pass
 
 
 
