@@ -2,6 +2,7 @@ import inspect
 from resources.servers.scripts.serverregistration import ServerRegistration
 from resources.vagrant.scripts.vagrantboxcreation import InteractiveVagrantBox
 from resources.vagrant.scripts.vagrantboxmanagement import VagrantBoxManagement
+from resources.servers.scripts.interactiveconnection import InteractiveConnection
 from resources.globalscripts.clearscreen import clearScreen
 
 class MainMenu:
@@ -74,7 +75,9 @@ class MainMenu:
                         vagrantboxmanagementsubmenu.show_menu()
 
                     elif choice == 3:
-                        return
+                        
+                        interactiveconnectionsubmenu = InteractiveConnectionSubMenu()
+                        interactiveconnectionsubmenu.show_menu()
 
             except ValueError:
 
@@ -142,6 +145,7 @@ class VagrantBoxManagementSubMenu():
                          
 
 class InteractiveConnectionSubMenu():
+
     def __init__(self):
 
         self.header = " - Remote Execution of Scripts/Commands On Servers - "
@@ -180,10 +184,15 @@ class InteractiveConnectionSubMenu():
 
                     if choice == 1:
 
-                        return
+                        interactiveconnection = InteractiveConnection()
+                        interactiveconnection.ask_options()
+                        interactiveconnection.connect_to_server()
 
                     elif choice == 2:
-                        return
+
+                        interactiveconnection = InteractiveConnection()
+                        interactiveconnection.ask_options()
+                        interactiveconnection.send_script()
 
 
             except ValueError:
