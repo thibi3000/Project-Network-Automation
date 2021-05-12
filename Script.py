@@ -73,6 +73,9 @@ class MainMenu:
                         vagrantboxmanagementsubmenu = VagrantBoxManagementSubMenu()
                         vagrantboxmanagementsubmenu.show_menu()
 
+                    elif choice == 3:
+                        return
+
             except ValueError:
 
                 clearScreen()
@@ -138,7 +141,56 @@ class VagrantBoxManagementSubMenu():
                 self.error = "* Error: Please enter a valid option!"  
                          
 
-                
+class InteractiveConnectionSubMenu():
+    def __init__(self):
+
+        self.header = " - Remote Execution of Scripts/Commands On Servers - "
+        self.error = ""
+
+    def show_menu(self):
+
+        while True:
+
+            #clearScreen()
+
+            try:
+
+                print(inspect.cleandoc(f"""
+                        {self.header}
+                        {self.error}
+                        Select one of the following options:
+                        1) Interactive connection
+                        2) Run remote script
+                        3) Return to main menu
+                        """))
+
+                choice = int(input("Enter your choice: "))
+
+                if choice not in [1, 2] or choice == "":
+
+                    if choice == 3:
+
+                        return
+
+                    else:
+
+                        raise ValueError
+
+                else:
+
+                    if choice == 1:
+
+                        return
+
+                    elif choice == 2:
+                        return
+
+
+            except ValueError:
+
+                clearScreen()
+                self.error = "* Error: Please enter a valid option!"
+
 
 if __name__ == '__main__':
     MainMenu().show_menu()
