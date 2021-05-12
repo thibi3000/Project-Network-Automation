@@ -83,6 +83,8 @@ class InteractiveVagrantBox:
 
                 for box in data["vagrantboxes"]:
                     boxnames.append(box["name"])
+                
+                serverdatabase.close()
             
             for name in boxnames:
 
@@ -228,6 +230,8 @@ Options: 512, 1024, 2048, 4096: """))
 
                     print(f"{self.provisionfilelocation} was found!")
                     self.provisionfilecontents = pvf.read()
+                    pvf.close()
+
                     clearScreen()
                     break
 
@@ -260,7 +264,9 @@ Options: 512, 1024, 2048, 4096: """))
             os.chdir(self.interactiveboxname)
             v = vagrant.Vagrant(quiet_stdout=False, quiet_stderr=False)
             v.init(self.interactiveboximage)
+            self.apply_config_file_settings()
             v.up()
+            v.halt()
             
             os.chdir(self.mainpath)
 
@@ -287,11 +293,12 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
     v.memory = {self.ram}
     v.cpus = {self.cpu}
+    v.gui = true
   end
-
-  config.vm.hostname = '{self.interactiveboxname}'
-  config.vm.network :private_network, ip: "{self.ip}"
+  config.vbguest.auto_update = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
   config.vm.provision :shell, path: "{self.provisionfilename}"
+
   """
 
             if self.portforwarddict["local"] != "None":
@@ -454,15 +461,16 @@ Vagrant.configure("2") do |config|
 
             with open(self.serverdatabase, 'r') as serverdatabase:
                         
-                        databasecontents = json.load(serverdatabase)
-                        
-                        vagrantlist = databasecontents['vagrantboxes']
-                        vagrantlist.append(vagrantdictionary)
-                        
+                databasecontents = json.load(serverdatabase)
+                
+                vagrantlist = databasecontents['vagrantboxes']
+                vagrantlist.append(vagrantdictionary)
+                serverdatabase.close()      
                     
             with open(self.serverdatabase, 'w') as serverdatabase:
                 
                 json.dump(databasecontents, serverdatabase)
+                serverdatabase.close()
 
     
         except json.JSONDecodeError:

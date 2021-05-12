@@ -41,7 +41,7 @@ class VagrantBoxManagement:
                     boxpath = os.path.join(os.getcwd(), path)
                     os.chdir(boxpath)
 
-                    v = vagrant.Vagrant(root=os.getcwd())
+                    v = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
                     status = v.status()[0]
 
                     print(f"Name: {name}")
@@ -50,35 +50,105 @@ class VagrantBoxManagement:
                     print("-------------------------------")
                     os.chdir(self.mainpath)
 
+                serverdatabase.close()
+
                 while True:
 
-                    print("Please input machine name and action.\nFor example: boxname-[start, suspend, stop, resume, destroy]")
+                    try:
 
-                    choice = input("")
+                        print("Please input machine name and action.\nFor example: boxname-[start, suspend, halt, destroy]")
 
-        return
+                        choice = input("")
+                        valid = False
+                        for box in data["vagrantboxes"]:
+
+                            if choice.split("-")[0] == box["name"] and choice.split("-")[1] in ["start","suspend","halt","destroy"]:
+
+                                valid = True
+                                action = choice.split("-")[1]
+                                validbox = box
+
+                        if valid:
+                            
+                            if action == "start":
+                                
+                                self.start_box(validbox)
+                                os.chdir(self.mainpath)
+
+                            elif action == "suspend":
+                                
+                                self.suspend_box(validbox)
+                                os.chdir(self.mainpath)
+
+                            elif action == "halt":
+
+                                self.halt_box(validbox)
+                                os.chdir(self.mainpath)
+
+                            elif action == "destroy":
+
+                                self.destroy_box(validbox)
+                                os.chdir(self.mainpath)
+                            
+                        else:
+
+                            raise ValueError("Wrong format!")
+
+                    except ValueError as e:
+
+                        print(e)
+        return  
 
     
-    def start_box(self):
+    def start_box(self, box):
+        
+        path = os.path.join(os.getcwd(), box["location"])
+        os.chdir(path)
+        start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+        
+        start.up()
+        
+    def halt_box(self, box):
 
-        pass 
+        path = os.path.join(os.getcwd(), box["location"])
+        os.chdir(path)
+        start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+        
+        start.halt()
 
-    def suspend_box(self):
+    def suspend_box(self, box):
 
-        pass
+        path = os.path.join(os.getcwd(), box["location"])
+        os.chdir(path)
+        start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+        
+        start.suspend()
 
-    def stop_box(self):
+    def destroy_box(self, box):
 
-        pass
+        path = os.path.join(os.getcwd(), box["location"])
+        os.chdir(path)
+        start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+        test = start.halt()
+        test2 = start.destroy()
+        print(path)
+        os.rmdir(path)
 
-    def resume_box(self):
+        with open(self.serverdatabase, 'r') as serverdatabase:
+            data = json.load(serverdatabase)
 
-        pass
+            serverdatabase.close()
 
-    def destroy_box(self):
+        for element in data:
 
-        pass
+            if element["name"] == box["name"]:
 
+                element.pop()
+
+        with open(self.serverdatabase, 'w') as serverdatabase:
+            data = json.dump(data, serverdatabase)
+
+            serverdatabase.close()
 
 
 

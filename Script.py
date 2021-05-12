@@ -124,7 +124,7 @@ class VagrantBoxManagementSubMenu():
                         interactivevagrantbox = InteractiveVagrantBox()
                         interactivevagrantbox.ask_for_options()
                         interactivevagrantbox.create_interactive_box()
-                        interactivevagrantbox.apply_config_file_settings()
+                        
                         
                     elif choice == 2:
                         
