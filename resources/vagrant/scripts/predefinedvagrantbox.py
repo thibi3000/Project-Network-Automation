@@ -72,9 +72,9 @@ class PredefinedVagrantBox:
             if type == "windows":
 
                 self.windowsprovisionfile = os.path.join("resources", "database", "vagrant", "predefined", "windowsprovision.ps1")
+                
                 copyfile(self.windowsprovisionfile, os.path.join(self.predefinedboxlocation, "windowsprovision.ps1"))
 
-            
             
             print(f"Succesfully copied Vagrantfile to {self.predefinedboxlocation} ")
         
