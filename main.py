@@ -3,6 +3,7 @@ from resources.servers.scripts.serverregistration import ServerRegistration
 from resources.vagrant.scripts.vagrantboxcreation import InteractiveVagrantBox
 from resources.vagrant.scripts.vagrantboxmanagement import VagrantBoxManagement
 from resources.servers.scripts.interactiveconnection import InteractiveConnection
+from resources.vagrant.scripts.predefinedvagrantbox import PredefinedVagrantBox
 from resources.globalscripts.clearscreen import clearScreen
 
 class MainMenu:
@@ -78,6 +79,11 @@ class MainMenu:
                         
                         interactiveconnectionsubmenu = InteractiveConnectionSubMenu()
                         interactiveconnectionsubmenu.show_menu()
+
+                    elif choice == 5:
+
+                        vagrantpredefinedsubmenu = VagrantPredefinedSubMenu()
+                        vagrantpredefinedsubmenu.show_menu()
 
             except ValueError:
 
@@ -155,7 +161,7 @@ class InteractiveConnectionSubMenu():
 
         while True:
 
-            #clearScreen()
+            clearScreen()
 
             try:
 
@@ -193,6 +199,60 @@ class InteractiveConnectionSubMenu():
                         interactiveconnection = InteractiveConnection()
                         interactiveconnection.ask_options()
                         interactiveconnection.send_script()
+
+
+            except ValueError:
+
+                clearScreen()
+                self.error = "* Error: Please enter a valid option!"
+
+class VagrantPredefinedSubMenu():
+
+    def __init__(self):
+
+        self.header = " - Please pick a predefined Vagrant box - "
+        self.error = ""
+
+    def show_menu(self):
+
+        while True:
+
+            clearScreen()
+
+            try:
+
+                print(inspect.cleandoc(f"""
+                        {self.header}
+                        {self.error}
+                        Select one of the following options:
+                        1) LAMP
+                        2) Windows with Git & Chrome
+                        3) Return to main menu
+                        """))
+
+                choice = int(input("Enter your choice: "))
+
+                if choice not in [1, 2] or choice == "":
+
+                    if choice == 3:
+
+                        return
+
+                    else:
+
+                        raise ValueError
+
+                else:
+
+                    if choice == 1:
+
+                        lampinstallation = PredefinedVagrantBox()
+                        lampinstallation.move_vagrantfile("lamp")
+
+                    elif choice == 2:
+
+                        lampinstallation = PredefinedVagrantBox()
+                        lampinstallation.move_vagrantfile("windows")
 
 
             except ValueError:

@@ -6,6 +6,7 @@ import netmiko
 from resources.globalscripts.clearscreen import clearScreen
 
 class InteractiveConnection:
+    
     def __init__(self):
 
         self.header = " - Interactive connection - "
