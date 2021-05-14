@@ -2,7 +2,9 @@
 import os
 import json
 import vagrant
+import time
 from resources.globalscripts.clearscreen import clearScreen
+from shutil import rmtree
 
 class VagrantBoxManagement:
 
@@ -88,7 +90,10 @@ class VagrantBoxManagement:
                             elif action == "destroy":
 
                                 self.destroy_box(validbox)
+                                
                                 os.chdir(self.mainpath)
+
+                                rmtree(validbox["location"])
                             
                         else:
 
@@ -130,20 +135,28 @@ class VagrantBoxManagement:
         os.chdir(path)
         start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
         test = start.halt()
+        
         test2 = start.destroy()
-        print(path)
-        os.rmdir(path)
+        
+
+        '''print("Please wait a few seconds...")
+        time.sleep(60)'''
+
+        '''kill_virtualbox_related_proceses()'''
+        '''kill_virtualbox_related_services()'''
+        
+        os.chdir(self.mainpath)
 
         with open(self.serverdatabase, 'r') as serverdatabase:
             data = json.load(serverdatabase)
 
             serverdatabase.close()
 
-        for element in data:
+        for element in data["vagrantboxes"]:
 
             if element["name"] == box["name"]:
 
-                element.pop()
+                data["vagrantboxes"].remove(element)
 
         with open(self.serverdatabase, 'w') as serverdatabase:
             data = json.dump(data, serverdatabase)

@@ -104,7 +104,7 @@ class VagrantBoxManagementSubMenu():
 
         while True:
 
-            #clearScreen()
+            clearScreen()
 
             try:
 

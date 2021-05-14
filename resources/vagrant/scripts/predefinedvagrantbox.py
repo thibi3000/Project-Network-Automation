@@ -11,7 +11,7 @@ class PredefinedVagrantBox:
 
     def __init__(self):
 
-        #self.serverdatabase = os.path.join("resources", "database", "database.json")
+        
         self.allpredefinedvagrantfiles = os.path.join("resources", "database", "vagrant", "predefined")
         self.predefinedboxlocation = None
 
@@ -36,17 +36,21 @@ class PredefinedVagrantBox:
 
                 print("Folder has been found!")
 
-                if os.path.isfile(os.path.join(self.predefinedboxlocation, "Vagrantfile")):
+                if os.path.isfile(os.path.join(self.predefinedboxlocation, "Vagrantfile")) or os.path.isfile(os.path.join(self.predefinedboxlocation, "windowsprovision.ps1")):
 
                     while True:
 
-                        choice = input("There is already a Vagrantfile in this location. Do you want to replace it? (y|n)")
+                        choice = input("You have already used this location. Do you want to replace all the current files? (y|n)")
 
                         if choice in ["y", "n"]:
 
                             if choice == "y":
+                                
+                                for file in os.listdir(self.predefinedboxlocation):
 
-                                os.remove(os.path.join(self.predefinedboxlocation, "Vagrantfile"))
+                                    os.remove(file)
+
+                                
                                 break
 
                             else:
@@ -78,6 +82,10 @@ class PredefinedVagrantBox:
             
             print(f"Succesfully copied Vagrantfile to {self.predefinedboxlocation} ")
         
+        except OSError as oserror:
+
+            print(oserror)
+
         except Exception as e:
 
             print(e)
