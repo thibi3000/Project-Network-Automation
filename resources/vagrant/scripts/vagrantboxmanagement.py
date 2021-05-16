@@ -137,14 +137,7 @@ class VagrantBoxManagement:
         test = start.halt()
         
         test2 = start.destroy()
-        
-
-        '''print("Please wait a few seconds...")
-        time.sleep(60)'''
-
-        '''kill_virtualbox_related_proceses()'''
-        '''kill_virtualbox_related_services()'''
-        
+                
         os.chdir(self.mainpath)
 
         with open(self.serverdatabase, 'r') as serverdatabase:

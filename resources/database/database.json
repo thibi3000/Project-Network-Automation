@@ -1,1 +1,6 @@
-{"servers": [], "vagrantboxes": []}
+{
+    "servers": [
+
+    ],
+    "vagrantboxes": []
+}

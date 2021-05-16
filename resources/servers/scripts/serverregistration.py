@@ -42,12 +42,20 @@ class ServerRegistration:
                 print(self.error)
 
                 servername = input("Please specify the server name: ")
+                serveros = input("Please specify the server OS (windows | macos | linux): ")
+
+                if serveros.lower() not in ["windows", "macos", "linux"]:
+
+                    raise Exception("* Error: This OS is not supported!")
+
+
                 serverip = str(ipaddress.ip_address(input("Please specify the server ip (Example: 192.168.1.1): ")))
                 
                 serverdictionary = {
 
                     "server-name": servername,
-                    "ip-address": serverip
+                    "ip-address": serverip,
+                    "os" : serveros.lower()
                 }
 
                 with open(self.serverdatabase, "r") as serverdatabase:
@@ -93,9 +101,9 @@ class ServerRegistration:
                 clearScreen()
                 self.error = "* Error: This IPv4-address is not valid!"
             
-            except Exception as namealreadyindb:
+            except Exception as e:
                 
                 clearScreen()
-                self.error = namealreadyindb
+                self.error = e
 
 

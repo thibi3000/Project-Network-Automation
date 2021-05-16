@@ -4,6 +4,7 @@ from resources.vagrant.scripts.vagrantboxcreation import InteractiveVagrantBox
 from resources.vagrant.scripts.vagrantboxmanagement import VagrantBoxManagement
 from resources.servers.scripts.interactiveconnection import InteractiveConnection
 from resources.vagrant.scripts.predefinedvagrantbox import PredefinedVagrantBox
+from resources.servers.scripts.remotehostmonitoring import RemoteHostMonitoring
 from resources.globalscripts.clearscreen import clearScreen
 
 class MainMenu:
@@ -79,6 +80,13 @@ class MainMenu:
                         
                         interactiveconnectionsubmenu = InteractiveConnectionSubMenu()
                         interactiveconnectionsubmenu.show_menu()
+                    
+                    elif choice == 4:
+
+                        remotehostemonitoring = RemoteHostMonitoring()
+                        remotehostemonitoring.ask_options()
+                        remotehostemonitoring.try_to_connect()
+                        
 
                     elif choice == 5:
 
@@ -89,8 +97,6 @@ class MainMenu:
 
                 clearScreen()
                 self.error = "* Error: Please enter a valid option!"
-
-
 
 
 class VagrantBoxManagementSubMenu():
@@ -205,6 +211,9 @@ class InteractiveConnectionSubMenu():
 
                 clearScreen()
                 self.error = "* Error: Please enter a valid option!"
+
+
+
 
 class VagrantPredefinedSubMenu():
 

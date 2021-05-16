@@ -69,7 +69,6 @@ class PredefinedVagrantBox:
             
             self.vagrantfile = os.path.join("resources", "database", "vagrant", "predefined", f"Vagrant{type}")
 
-            
 
             copyfile(self.vagrantfile, os.path.join(self.predefinedboxlocation, "Vagrantfile"))
 
