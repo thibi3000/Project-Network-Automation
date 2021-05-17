@@ -33,7 +33,7 @@ class InteractiveVagrantBox:
         self.mainpath = os.getcwd()
 
         self.header = " - Create Vagrant Box (interactive) - "
-        self.error = ""
+        
 
 
     def ask_for_options(self):
@@ -51,113 +51,140 @@ class InteractiveVagrantBox:
 
         print(inspect.cleandoc(f"""
                         {self.header}
-                        {self.error}
-                        The following wizard will ask your for a few settings to configure your Vagrant box"""))
 
-        while True:
-
-            self.interactiveboximage = input("""Please enter a valid Vagrant image: """)
-            if self.check_vagrant_image(self.interactiveboximage):
-                print(self.header)
-                break
-            else:
-                print(self.error)
-            
-        
-        
-        while True:
-
-            self.interactiveboxname = input("Please enter a name for your Vagrant box: ")
-
-            if self.interactiveboximage == '':
-
-                clearScreen()
-                print("Invalid name! Please pick another one!")
-
-            boxnames = []
-            valid = True
-
-            with open(self.serverdatabase,"r") as serverdatabase:
-                
-                data = json.load(serverdatabase)
-
-                for box in data["vagrantboxes"]:
-                    boxnames.append(box["name"])
-                
-                serverdatabase.close()
-            
-            for name in boxnames:
-
-                if self.interactiveboxname == name:
-                    valid = False
+                        The following wizard will ask your for a few inputs to configure your Vagrant box.
                         
-            if valid == True:
+                        """))
 
-                print("Valid name!")
+        while True:
 
+            try:
+
+                self.interactiveboximage = input("""Please enter a valid Vagrant image: """)
+
+                if self.check_vagrant_image(self.interactiveboximage):
+
+                    break
+
+                else:
+
+                    raise Exception("Error: This is not a valid image! Example: hashicorp/precise64.")
+            
+            except Exception as e:
+
+                print(e)
+
+                continue
+        
+        
+        while True:
+
+            try:
+
+                self.interactiveboxname = input("Please enter a name for your Vagrant box: ")
+
+                if self.interactiveboximage == '':
+
+                    raise ValueError("Error: Invalid name! Please pick another one!")
+
+                boxnames = []
+
+                with open(self.serverdatabase,"r") as serverdatabase:
+                    
+                    data = json.load(serverdatabase)
+
+                    for box in data["vagrantboxes"]:
+
+                        boxnames.append(box["name"])
+                    
+                    serverdatabase.close()
+                
+                for name in boxnames:
+
+                    if self.interactiveboxname == name:
+
+                        raise ValueError("Error: This name already exists! Please pick another one!")
+                            
                 self.interactiveboxlocation = os.path.join("resources", "database", "vagrant", "interactive", self.interactiveboxname)
 
                 break
 
-            else:
-
-                clearScreen()
-                print("This name is already in use! Please pick another one!")
+            except json.JSONDecodeError:
+                
+                print("Error: serverdatabase.json is empty!")
+                exit(1)
             
-           
+            except FileNotFoundError:
 
-        
+                print("Error: serverdatabase.json was not found!")
+                exit(1)
+                
+            except ValueError as e:
+
+                print(e)
+                continue
+
+                
+            
+            
+            
         while True:
 
             try:
 
-                self.cpu = int(input("""Please enter the amount of CPU cores: 
-Options: 1, 2, 3, 4: """))
+                self.cpu = int(input(inspect.cleandoc("""
+                    Please enter the amount of CPU cores: 
+                    Options: 1, 2, 3, 4: 
+                    """)))
 
                 if self.cpu not in range(1,5):
 
-                    raise ValueError
+                    raise ValueError("Error: Please input a valid CPU option!")
                 
                 break
             
-            except ValueError:
+            except ValueError as e:
 
-                clearScreen()
-                print("Please input a valid CPU option!")
+                print(e)
+
+                continue
             
         
         while True:
 
             try:
 
-                self.ram = int(input("""Please enter the amount of RAM (in MB): 
-Options: 512, 1024, 2048, 4096: """))
-
+                self.ram = int(input(inspect.cleandoc("""
+                    Please enter the amount of RAM (in MB): 
+                    Options: 512, 1024, 2048, 4096: 
+                    """)))
+                
                 if self.ram not in [512, 1024, 2048, 4096]:
 
-                    raise ValueError
+                    raise ValueError("Error: Please input a valid RAM option!")
                 
                 break
             
-            except ValueError:
+            except ValueError as e:
 
-                clearScreen()
-                print("Please input a valid RAM option!")
+                print(e)
+
+                continue
         
 
         while True:
 
-            
             try:
 
                 self.ip = format(ipaddress.ip_address(input("""Please specify the server ip (Example: 192.168.1.1): """)))
                 
                 break
             
-            except ValueError:
+            except ValueError as e:
 
-                clearScreen()
-                print("Please input a valid ip-address!")
+                print(f"Error: {e}!")
+
+                continue
         
 
         while True:
@@ -177,8 +204,9 @@ Options: 512, 1024, 2048, 4096: """))
 
                         except ValueError:
                             
-                            clearScreen()
-                            print("Please input a valid local port!")
+                            print("Error: Please input a valid local port!")
+
+                            continue
 
 
 
@@ -191,8 +219,9 @@ Options: 512, 1024, 2048, 4096: """))
 
                         except ValueError:
                             
-                            clearScreen()
                             print("Please input a valid public port!")
+
+                            continue
 
                     self.portforwarddict = {
                         
@@ -203,7 +232,6 @@ Options: 512, 1024, 2048, 4096: """))
                     break
 
 
-
                 elif choice.lower() == "n":
                     
                     print("Portforwarding won't be configured!")
@@ -211,13 +239,15 @@ Options: 512, 1024, 2048, 4096: """))
 
                 else:
 
-                    raise ValueError("Please input y or n!")
+                    raise ValueError("Error: Please input y or n!")
             
             
-            except ValueError:
+            except ValueError as e:
 
-                clearScreen()
-                print("Please input y or n!")
+                print(e)
+
+                continue
+
 
         
         while True:
@@ -232,39 +262,73 @@ Options: 512, 1024, 2048, 4096: """))
                     self.provisionfilecontents = pvf.read()
                     pvf.close()
 
-                    clearScreen()
                     break
 
             except FileNotFoundError:
 
-                clearScreen()
                 print(f"Unable to find provision file!")
+
+                continue
 
 
         self.write_to_database(self.interactiveboxname, self.interactiveboximage, self.interactiveboxlocation, self.cpu, self.ram, self.ip, self.portforwarddict, self.provisionfilelocation)
-            
         
-        print(f"""You selected these options: \n
-    # Name: {self.interactiveboxname}\n
-    # Image: {self.interactiveboximage}\n
-    # Location : {self.interactiveboxlocation}\n
-    # CPU: {self.cpu}\n
-    # RAM: {self.ram}\n
-    # IP: {self.ip}\n
-    # Portforwarding: local: {self.portforwarddict['local']}, public: {self.portforwarddict['public']}\n
-    # Provision file: {self.provisionfilelocation}""")
+
+        while True:
+
+            try:
+                
+                clearScreen()
+
+                print(inspect.cleandoc(f"""
+
+                        Succesfully checked all your inputs!
+                        Summary:
+
+                        Name: {self.interactiveboxname}
+                        Image: {self.interactiveboximage}
+                        IPv4: {self.ip}
+                        Location : {self.interactiveboxlocation}
+                        CPU cores: {self.cpu}
+                        RAM: {self.ram} MB
+                        Portforwarding: local: {self.portforwarddict['local']}, public: {self.portforwarddict['public']}
+                        Provision file: {self.provisionfilelocation}
+
+                        In order to complete this process we will need to initiate your Vagrant box.
+                        This will take some time. Please be patient.
+                        """))
+
+                choice = input("Press Enter to continue.")
+
+                if choice == "":
+
+                    return
+                
+                else:
+
+                    raise ValueError
+
+            except ValueError:
+
+                continue
+
 
 
     def create_interactive_box(self):
 
         try:
 
+            clearScreen()
+
             os.chdir(self.allinteractiveboxes)
             os.mkdir(self.interactiveboxname)
             os.chdir(self.interactiveboxname)
+
             v = vagrant.Vagrant(quiet_stdout=False, quiet_stderr=False)
             v.init(self.interactiveboximage)
+
             self.apply_config_file_settings()
+
             v.up()
             v.halt()
             
@@ -272,8 +336,36 @@ Options: 512, 1024, 2048, 4096: """))
 
         except Exception as e:
 
-            print(e)
+            print(f"Error while initiating your Vagrant box: {e}")
             exit(1)
+        
+        while True:
+
+            try:
+                
+                clearScreen()
+
+                print(inspect.cleandoc(f"""
+
+                        Succesfully configured your new Vagrant box!
+                        You can launch this box with the option 'Manage existing boxes'.
+                        """))
+
+                choice = input("Press Enter to return to the Vagrant Box Management menu.")
+
+                if choice == "":
+
+                    return
+                
+                else:
+
+                    raise ValueError
+
+            except ValueError:
+
+                continue
+
+
 
     def apply_config_file_settings(self):
 
@@ -284,26 +376,26 @@ Options: 512, 1024, 2048, 4096: """))
                 ProvisionFile.write(self.provisionfilecontents)
                 ProvisionFile.close()
 
-            
+            contents = inspect.cleandoc(f"""
+            Vagrant.configure("2") do |config|
 
-            contents = f"""
-Vagrant.configure("2") do |config|
+              config.vm.box = "{self.interactiveboximage}"
 
-  config.vm.box = "{self.interactiveboximage}"
-  config.vm.provider "virtualbox" do |v|
-    v.memory = {self.ram}
-    v.cpus = {self.cpu}
-    v.gui = true
-  end
-  config.vbguest.auto_update = false
-  config.vm.synced_folder '.', '/vagrant', disabled: true
-  config.vm.provision :shell, path: "{self.provisionfilename}"
+              config.vm.provider "virtualbox" do |v|
+                v.memory = {self.ram}
+                v.cpus = {self.cpu}
+                v.gui = true
+            end
 
-  """
+            config.vbguest.auto_update = false
+            config.vm.synced_folder '.', '/vagrant', disabled: true
+            config.vm.provision :shell, path: "{self.provisionfilename}"
+
+            """)
 
             if self.portforwarddict["local"] != "None":
 
-                contents += """\n  config.vm.network :forwarded_port, guest: {self.portforwarddict["local"]}, host: {self.portforwarddict["public"]}"""
+                contents += f"""\n  config.vm.network :forwarded_port, guest: {self.portforwarddict["local"]}, host: {self.portforwarddict["public"]}"""
 
             contents += """\nend"""
 
@@ -312,22 +404,20 @@ Vagrant.configure("2") do |config|
                 VagrantFile.write(contents)
                 VagrantFile.close()
 
-            print(contents)
         
         except FileNotFoundError:
 
-            self.error = f"Unable to find {os.path.join(self.mainpath, self.interactiveboxlocation, 'Vagrantfile')}"
-            print(self.error)
-            return self.error
+            print(f"Error: Unable to find {os.path.join(self.mainpath, self.interactiveboxlocation, 'Vagrantfile')}")
+            exit(1)
             
 
         except Exception:
 
-            self.error = f"Something went wrong while writing the configuration settings!"
-            print(self.error)
-            return self.error
+            print(f"Error: Something went wrong while writing the configuration settings!")
+            exit(1)
             
 
+        
 
 
     def check_vagrant_image(self, image):
@@ -339,8 +429,6 @@ Vagrant.configure("2") do |config|
 
         except IndexError:
 
-            self.error = '* Error: This image name is not valid! Example: ubuntu/trusty64'
-
             return False
         
         try:
@@ -350,25 +438,22 @@ Vagrant.configure("2") do |config|
 
             if r.status_code == 200:
 
-                clearScreen()
                 return True
+            
+            else:
+
+                return False
         
         except requests.HTTPError as e:
 
-            clearScreen()
-            self.error = e
             return False
 
         except requests.ConnectionError as e:
 
-            clearScreen()
-            self.error = e
             return False
         
         except requests.exceptions.HTTPError:
 
-            clearScreen()
-            self.error = '* Error: This image name is not valid! Example: ubuntu/trusty64'
             return False
 
 
@@ -408,12 +493,18 @@ Vagrant.configure("2") do |config|
     
         except json.JSONDecodeError:
 
-            clearScreen()
             print("Serverdatabase.json is empty!")
+            exit(1)
             
         except FileNotFoundError:
-            clearScreen()
+
             print("Serverdatabase.json was not found!")
+            exit(1)
+        
+        except Exception as e:
+
+            print(f"Error: {e}!")
+            exit(1)
 
 
     

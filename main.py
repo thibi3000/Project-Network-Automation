@@ -1,10 +1,13 @@
 import inspect
+
 from resources.servers.scripts.serverregistration import ServerRegistration
+from resources.servers.scripts.remotehostmonitoring import RemoteHostMonitoring
+from resources.servers.scripts.interactiveconnection import InteractiveConnection
+
 from resources.vagrant.scripts.vagrantboxcreation import InteractiveVagrantBox
 from resources.vagrant.scripts.vagrantboxmanagement import VagrantBoxManagement
-from resources.servers.scripts.interactiveconnection import InteractiveConnection
 from resources.vagrant.scripts.predefinedvagrantbox import PredefinedVagrantBox
-from resources.servers.scripts.remotehostmonitoring import RemoteHostMonitoring
+
 from resources.globalscripts.clearscreen import clearScreen
 
 class MainMenu:
@@ -30,8 +33,7 @@ class MainMenu:
             Any other input will raise a Valuerror and clear your screen.
         """
 
-        
-
+    
         while True:
 
             try:
@@ -78,8 +80,8 @@ class MainMenu:
 
                     elif choice == 3:
                         
-                        interactiveconnectionsubmenu = InteractiveConnectionSubMenu()
-                        interactiveconnectionsubmenu.show_menu()
+                        remoteexecutionsubmenu = RemoteExecutionSubMenu()
+                        remoteexecutionsubmenu.show_menu()
                     
                     elif choice == 4:
 
@@ -156,7 +158,7 @@ class VagrantBoxManagementSubMenu():
                 self.error = "* Error: Please enter a valid option!"  
                          
 
-class InteractiveConnectionSubMenu():
+class RemoteExecutionSubMenu():
 
     def __init__(self):
 

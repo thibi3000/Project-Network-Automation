@@ -10,7 +10,6 @@ class InteractiveConnection:
     def __init__(self):
 
         self.header = " - Interactive connection - "
-        self.error = ""
 
         self.servername = None
         self.netmikodict = {}
@@ -23,10 +22,8 @@ class InteractiveConnection:
 
         clearScreen()
 
-        '''print(inspect.cleandoc(f"""
-                                {self.header}
-                                {self.error}
-                                The following wizard will ask your for a few settings to configure your Vagrant box"""))'''
+        print(self.header)
+        print("")
 
         while True:
 
@@ -67,10 +64,13 @@ class InteractiveConnection:
             except ValueError as e:
 
                 print(e)
+
+                continue
             
             except Exception:
 
                 print(e)
+                exit(1)
 
             
     def connect_to_server(self):
@@ -96,11 +96,17 @@ class InteractiveConnection:
         except netmiko.NetmikoAuthenticationException:
 
             print("Unable to login using your credentials!")
+            exit(1)
         
         except netmiko.NetMikoTimeoutException:
 
             print("A timeout occured! The host is not available!")
+            exit(1)
 
+        except Exception as e:
+
+            print(f"Error: {e}")
+            exit(1)
     
     def send_script(self):
 
@@ -119,11 +125,39 @@ class InteractiveConnection:
 
             output = net_connect.send_config_set(self.scriptfilecontents)
             print(output)
+
+            while True:
+
+                try:
+
+                    choice = input("Press Enter to return to the menu.")
+
+                    if choice == "":
+
+                        return
+                    
+                    else:
+
+                        raise ValueError
+
+                except ValueError as e:
+
+                    print(e)
+
+                    continue
+
                 
         except netmiko.NetmikoAuthenticationException:
 
             print("Unable to login using your credentials!")
+            exit(1)
         
         except netmiko.NetMikoTimeoutException:
 
             print("A timeout occured! The host is not available!")
+            exit(1)
+        
+        except Exception as e:
+
+            print(f"Error: {e}")
+            exit(1)
