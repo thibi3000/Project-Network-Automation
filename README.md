@@ -57,33 +57,18 @@ Vagrant 1.4 or greater (currently tested with 1.7.2). Using the latest version o
 
 [Download here](https://www.vagrantup.com/downloads)
 
+### Install vbguest
+
+```bash
+vagrant plugin install vagrant-vbguest
+```
+
 ### Install a Vagrant provider
 
 #### VirtualBox
 
 Must be installed on its own.
 [Download here](https://www.virtualbox.org/wiki/Downloads)
-
-#### VMware
-
-Requires a license. Read more about it [here](https://www.vagrantup.com/docs/providers/vmware/installation).
-
-```bash
-vagrant plugin install vagrant-vmware-desktop
-vagrant plugin license vagrant-vmware-desktop ~/license.lic
-```
-
-#### HyperV
-
-Windows only!
-
-```bash
-Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
-```
-
-#### Docker
-
-Supported out of the box.
 
 ## Usage
 
