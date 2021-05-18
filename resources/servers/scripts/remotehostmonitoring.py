@@ -168,10 +168,7 @@ class RemoteHostMonitoring:
 
 
 
-        except wmi.x_wmi:
 
-            print("Something went wrong while connecting to the remote machine.\nPossible reasons: You're trying to connect to a Linux machine, your credentials are wrong, ...")
-            exit(1)
         
         except netmiko.NetmikoAuthenticationException:
 
@@ -185,4 +182,9 @@ class RemoteHostMonitoring:
 
         except Exception as e:
             print(e)
+            exit(1)
+        
+        except wmi.x_wmi:
+
+            print("Something went wrong while connecting to the remote machine.\nPossible reasons: You're trying to connect to a Linux machine, your credentials are wrong, ...")
             exit(1)
