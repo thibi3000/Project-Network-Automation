@@ -1,7 +1,12 @@
 from resources.globalscripts.clearscreen import clearScreen
 import os
 import json
-import wmi
+import sys
+
+if sys.platform == 'win32':
+        
+    import wmi
+
 import netmiko
 from netmiko import ConnectHandler
 
