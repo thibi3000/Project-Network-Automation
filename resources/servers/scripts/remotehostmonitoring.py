@@ -119,7 +119,7 @@ class RemoteHostMonitoring:
                 
                 else:
 
-                    print("huh")
+                    
                     raise Exception("Error: Sorry! Monitoring Windows machines is not possible on Linux & macOS!")
 
             else:
