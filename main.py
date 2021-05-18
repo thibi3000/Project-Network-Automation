@@ -2,7 +2,7 @@ import inspect
 
 from resources.servers.scripts.serverregistration import ServerRegistration
 from resources.servers.scripts.remotehostmonitoring import RemoteHostMonitoring
-from resources.servers.scripts.interactiveconnection import InteractiveConnection
+from resources.servers.scripts.interactiveserverconnection import InteractiveConnection
 
 from resources.vagrant.scripts.vagrantboxcreation import InteractiveVagrantBox
 from resources.vagrant.scripts.vagrantboxmanagement import VagrantBoxManagement
