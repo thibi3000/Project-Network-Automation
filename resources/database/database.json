@@ -1,1 +1,4 @@
-{"servers": [{"server-name": "bruh", "ip-address": "1.1.1.1", "os": "windows"}, {"server-name": "windows", "ip-address": "192.168.1.114", "os": "windows"}], "vagrantboxes": []}
+{
+    "servers": [],
+    "vagrantboxes": []
+}
