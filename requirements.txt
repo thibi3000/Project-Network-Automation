@@ -20,4 +20,4 @@ six==1.15.0
 tenacity==7.0.0
 textfsm==1.1.0
 urllib3==1.26.4
-WMI==1.5.1
+WMI==1.5.1; sys_platform == 'Windows'
