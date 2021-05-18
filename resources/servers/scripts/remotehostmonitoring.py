@@ -2,6 +2,7 @@ from resources.globalscripts.clearscreen import clearScreen
 import os
 import json
 import sys
+import inspect
 
 if sys.platform == 'win32':
         
@@ -18,19 +19,19 @@ class RemoteHostMonitoring:
         self.netmikoandwmidict = {}
         self.netmikodict = {}
 
+        self.header = " - Remote Host Monitoring - "
+
     def ask_options(self):
 
         clearScreen()
 
-        '''print(inspect.cleandoc(f"""
-                                {self.header}
-                                {self.error}
-                                The following wizard will ask your for a few settings to configure your Vagrant box"""))'''
+        print(self.header)
+        print("")
 
         while True:
 
             try:
-
+                
                 servername = input("Please pick a server: ")
                 
                 with open(self.serverdatabase, "r") as serverdatabase:
@@ -56,8 +57,6 @@ class RemoteHostMonitoring:
                         self.netmikoandwmidict["username"] = input("Please enter your username: ")
                         self.netmikoandwmidict["password"] = input("Please enter your password: ")
                         
-                        
-                        
                         return
 
                     else:
@@ -67,10 +66,14 @@ class RemoteHostMonitoring:
             except ValueError as e:
 
                 print(e)
+
+                continue
             
             except Exception:
 
                 print(e)
+
+                exit(1)
 
     def try_to_connect(self):
 
@@ -78,38 +81,45 @@ class RemoteHostMonitoring:
         try:
 
             if self.netmikoandwmidict["os"] == "windows":
+
+                if sys.platform == "win32":
+
                 
-                print("Windows!")
+                    print("Windows!")
 
-                c = wmi.WMI(self.netmikoandwmidict["host"], user=self.netmikoandwmidict["username"], password=self.netmikoandwmidict["password"],)
-                
-                print("Running processes: ")
-                for process in c.Win32_Process():
-                    print(process.ProcessId, process.Name)
-
-                print("")
-                print("Disk usage: ")
-                for disk in c.Win32_logicaldisk():
-
-                    if disk.Caption == "C:":
-                        
-                        usedspace = float(disk.Size) - float(disk.FreeSpace)
-
-                        print(f"{round(usedspace / 1024**3,2)} GB / {round(float(disk.Size) / 1024**3, 2)} GB")
-
-                print("")
-                print("RAM usage: ")
-                for memory in c.Win32_OperatingSystem():
-    
-                    usedmemory = float(memory.TotalVisibleMemorySize) - float(memory.FreePhysicalMemory)
+                    c = wmi.WMI(self.netmikoandwmidict["host"], user=self.netmikoandwmidict["username"], password=self.netmikoandwmidict["password"],)
                     
-                    print(f"{round(usedmemory / 1024**2,2)} GB / {round(float(memory.TotalVisibleMemorySize) / 1024**2, 2)} GB")
+                    print("Running processes: ")
+                    for process in c.Win32_Process():
+                        print(process.ProcessId, process.Name)
 
-                print("")
-                print("CPU usage: ")
-                for cpu in c.Win32_Processor():
-    
-                    pass
+                    print("")
+                    print("Disk usage: ")
+                    for disk in c.Win32_logicaldisk():
+
+                        if disk.Caption == "C:":
+                            
+                            usedspace = float(disk.Size) - float(disk.FreeSpace)
+
+                            print(f"{round(usedspace / 1024**3,2)} GB / {round(float(disk.Size) / 1024**3, 2)} GB")
+
+                    print("")
+                    print("RAM usage: ")
+                    for memory in c.Win32_OperatingSystem():
+        
+                        usedmemory = float(memory.TotalVisibleMemorySize) - float(memory.FreePhysicalMemory)
+                        
+                        print(f"{round(usedmemory / 1024**2,2)} GB / {round(float(memory.TotalVisibleMemorySize) / 1024**2, 2)} GB")
+
+                    print("")
+                    print("CPU usage: ")
+                    for cpu in c.Win32_Processor():
+        
+                        pass
+                
+                else:
+
+                    raise Exception("Error: Sorry! Monitoring Windows machines is not possible on Linux & macOS!")
 
             else:
 
@@ -136,20 +146,41 @@ class RemoteHostMonitoring:
 
                 print(output)
                 
-        
+
+            while True:
+
+                try:
+
+                    choice = input("Press Enter to return to the menu.")
+
+                    if choice == "":
+
+                        return
+                    
+                    else:
+
+                        raise ValueError
+
+                except ValueError:
+
+                    continue
+
 
 
         except wmi.x_wmi:
 
             print("Something went wrong while connecting to the remote machine.\nPossible reasons: You're trying to connect to a Linux machine, your credentials are wrong, ...")
+            exit(1)
         
         except netmiko.NetmikoAuthenticationException:
 
             print("Unable to login using your credentials!")
-        
+            exit(1)
+
         except netmiko.NetMikoTimeoutException:
 
             print("A timeout occured! The host is not available!")
+            exit(1)
 
         except Exception as e:
             print(e)
