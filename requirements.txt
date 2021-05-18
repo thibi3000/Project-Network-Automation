@@ -13,7 +13,7 @@ pycparser==2.20
 PyNaCl==1.4.0
 pyserial==3.5
 python-vagrant==0.5.15
-pywin32==300; sys_platform == 'win32'
+pywin32==300; sys_platform == 'Windows'
 requests==2.25.1
 scp==0.13.3
 six==1.15.0
