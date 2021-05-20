@@ -73,7 +73,7 @@ Must be installed on its own.
 ## Usage
 
 ```bash
-python Script.py
+python main.py
 ```
 
 ## Documentation
