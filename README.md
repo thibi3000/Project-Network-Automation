@@ -3,7 +3,7 @@
 Python script to manage servers and automate tasks.
 Works on Windows, Linux & macOS.
 
-![Script](https://user-images.githubusercontent.com/23398694/116447187-3c22f380-a847-11eb-98fa-29089c0b5e81.png)
+![Script](https://user-images.githubusercontent.com/23398694/119966980-675e4700-bf9b-11eb-95f5-b9c38a27b634.jpg)
 
 ## Prerequisites
 
