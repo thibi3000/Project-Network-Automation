@@ -115,7 +115,13 @@ class RemoteHostMonitoring:
                     print("CPU usage: ")
                     for cpu in c.Win32_Processor():
         
-                        pass
+                        if cpu.LoadPercentage == None:
+
+                            raise Exception("Error: Unable to retrieve CPU LoadPercentage!")
+                            
+                        else:
+
+                            print(cpu.LoadPercentage)
                 
                 else:
 
