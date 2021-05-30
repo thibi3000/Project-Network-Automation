@@ -9,16 +9,37 @@ class InteractiveConnection:
     
     def __init__(self):
 
+        """ Constructor
+
+            Attributes: 
+
+                header (str) : Contains the name of the current option
+                severname : The name of the chosen server
+                ip : The IPv4 address of the chosen server
+                username: The username that is used to login to the chosen server
+                password: The password that is used to login to the chosen server
+                netmikodict  (dictionary) : Dictionary used by netmiko to connect to the server
+                serverdatabase (str) : Location of the json database
+        """
+
         self.header = " - Interactive connection - "
 
         self.servername = None
-        self.netmikodict = {}
         self.ip = None
         self.username = None
         self.password = None
+
+        self.netmikodict = {}
+
         self.serverdatabase = os.path.join("resources", "database", "database.json")
 
     def ask_options(self):
+
+        """ Method: This method will clear your screen, start an endless loop and ask you to input a server name.
+            If the database contains this server name it will grab the IPv4 address and ask you for your username and password.
+
+            An invalid server input will raise a Valuerror.
+        """
 
         clearScreen()
 
@@ -74,6 +95,13 @@ class InteractiveConnection:
 
             
     def connect_to_server(self):
+
+        """ Method: This method will use all your credentials to connect to the remote server.
+            You will then be able to send unix commands to the server. Entering 'disconnect' will close the session.
+
+            Invalid credentials will raise a NetmikoAuthenticationException.
+            Invalid IPv4 or anything else network related will raise a NetMikoTimeoutException.
+        """
         
         try:
 
@@ -109,6 +137,14 @@ class InteractiveConnection:
             exit(1)
     
     def send_script(self):
+
+        """ Method: This method will use all your credentials to connect to the remote server.
+            You will then be able to send bash scripts to the server. Input can be a relative of full path.
+            
+            An invalid script will raise an exception.
+            Invalid credentials will raise a NetmikoAuthenticationException.
+            Invalid IPv4 or anything else network related will raise a NetMikoTimeoutException.
+        """
 
         try:
 

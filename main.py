@@ -15,7 +15,14 @@ class MainMenu:
     
     def __init__(self):
 
-        """ Constructor: We don't need any attributes in this class (for now). """
+        """ Constructor
+
+            Attributes: 
+
+                header (str) : Contains the name of the project
+                error (str) : Contains the latest error message. This will be displayed at the top of
+                your terminal to keep things clean.
+        """
         
         self.header = " - Project Network Automation 1 - "
         self.error = ""
@@ -105,10 +112,30 @@ class VagrantBoxManagementSubMenu():
 
     def __init__(self):
 
+        """ Constructor
+
+            Attributes: 
+
+                header (str) : Contains the menu name
+                error (str) : Contains the latest error message. This will be displayed at the top of
+                your terminal to keep things clean.
+        """
+
         self.header = " - Vagrant Box Management - "
         self.error = ""
 
     def show_menu(self):
+
+        """ Method: This method will clear your screen, start an endless loop, show you a list of options
+            and will keep running untill you enter a certain option.
+            Depending on your choice it will create a new class object from another script or exit.
+
+            1, 2, 3 -> Valid options
+
+            3 will return to the main menu.
+
+            Any other input will raise a Valuerror and clear your screen.
+        """
 
         while True:
 
@@ -162,10 +189,30 @@ class RemoteExecutionSubMenu():
 
     def __init__(self):
 
+        """ Constructor
+
+            Attributes: 
+
+                header (str) : Contains the menu name
+                error (str) : Contains the latest error message. This will be displayed at the top of
+                your terminal to keep things clean.
+        """
+
         self.header = " - Remote Execution of Scripts/Commands On Servers - "
         self.error = ""
 
     def show_menu(self):
+
+        """ Method: This method will clear your screen, start an endless loop, show you a list of options
+            and will keep running untill you enter a certain option.
+            Depending on your choice it will create a new class object from another script or exit.
+
+            1, 2, 3 -> Valid options
+
+            3 will return to the main menu.
+
+            Any other input will raise a Valuerror and clear your screen.
+        """
 
         while True:
 
@@ -221,10 +268,31 @@ class VagrantPredefinedSubMenu():
 
     def __init__(self):
 
+        """ Constructor
+
+            Attributes: 
+
+                header (str) : Contains the menu name
+                error (str) : Contains the latest error message. This will be displayed at the top of
+                your terminal to keep things clean.
+        
+        """
+
         self.header = " - Please pick a predefined Vagrant box - "
         self.error = ""
 
     def show_menu(self):
+
+        """ Method: This method will clear your screen, start an endless loop, show you a list of options
+            and will keep running untill you enter a certain option.
+            Depending on your choice it will create a new class object from another script or exit.
+
+            1, 2, 3 -> Valid options
+
+            3 will return to the main menu.
+
+            Any other input will raise a Valuerror and clear your screen.
+        """
 
         while True:
 

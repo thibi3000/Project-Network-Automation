@@ -14,6 +14,15 @@ from netmiko import ConnectHandler
 class RemoteHostMonitoring:
 
     def __init__(self):
+
+        """ Constructor
+
+            Attributes: 
+
+                header (str) : Contains the name of the current option
+                netmikodict  (dictionary) : Dictionary used by netmiko to connect to the server
+                serverdatabase (str) : Location of the json database
+        """
         
         self.serverdatabase = os.path.join("resources", "database", "database.json")
         self.netmikoandwmidict = {}
@@ -22,6 +31,12 @@ class RemoteHostMonitoring:
         self.header = " - Remote Host Monitoring - "
 
     def ask_options(self):
+
+        """ Method: This method will clear your screen, start an endless loop and ask you to input a server name.
+            If the database contains this server name it will grab the IPv4 address and ask you for your username and password.
+
+            An invalid server input will raise a Valuerror.
+        """
 
         clearScreen()
 
@@ -77,6 +92,16 @@ class RemoteHostMonitoring:
 
     def try_to_connect(self):
 
+        """ Method: This method will first determine your operating system. If you're running this script on Windows you can
+            request information from Windows and Unix-based servers. If you're running Linux or macOS you can only request informatio
+            from Unix-based servers.
+
+            The information contains: running processes, disk usage, ram usage & cpu usage.
+            
+            Invalid credentials will raise a NetmikoAuthenticationException.
+            Invalid IPv4 or anything else network related will raise a NetMikoTimeoutException.
+            
+        """
 
         try:
 
@@ -121,7 +146,7 @@ class RemoteHostMonitoring:
                             
                         else:
 
-                            print(cpu.LoadPercentage)
+                            print(f"{cpu.LoadPercentage} %")
                 
                 else:
 
@@ -137,9 +162,6 @@ class RemoteHostMonitoring:
                 self.netmikodict["username"] = self.netmikoandwmidict["username"]
                 self.netmikodict["password"] = self.netmikoandwmidict["password"]
                 
-                
-
-                print(self.netmikodict)
                 
                 set = ['df -H | grep -vE "^Filesystem/tmpfs/cdrom"',
                  "free -m",
@@ -172,10 +194,6 @@ class RemoteHostMonitoring:
 
                     continue
 
-
-
-
-        
         except netmiko.NetmikoAuthenticationException:
 
             print("Unable to login using your credentials!")

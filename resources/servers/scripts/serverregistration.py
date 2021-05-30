@@ -8,10 +8,12 @@ class ServerRegistration:
 
     def __init__(self):
 
-        """ Constructor:
+        """ Constructor
 
-            self.serverdatabase -> holds the location of the json server database file.
+            Attributes: 
 
+                header (str) : Contains the name of the current option
+                serverdatabase (str) : Location of the json database
         """
         
         self.serverdatabase = os.path.join("resources", "database", "database.json")
@@ -20,6 +22,13 @@ class ServerRegistration:
 
     def register_server(self):
 
+        """ Method: This method will clear your screen and ask you for some information to register the server.
+            (name, ip, server os)
+
+            An invalid servername will raise an Exception.
+            An empty database will raise a JSONDecodeError.
+            If the database file is missing it will raise a FileNotFoundError.
+        """
 
         clearScreen()
         
@@ -65,7 +74,6 @@ class ServerRegistration:
                 print(e)
 
                 continue
-
                 
 
         while True:
