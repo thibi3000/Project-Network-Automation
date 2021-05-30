@@ -5,21 +5,24 @@ from netmiko import ConnectHandler
 import netmiko
 from resources.globalscripts.clearscreen import clearScreen
 
-class InteractiveConnection:
-    
-    def __init__(self):
 
+class InteractiveConnection:
+
+    def __init__(self):
         """ Constructor
 
             Attributes: 
 
                 header (str) : Contains the name of the current option
-                severname : The name of the chosen server
-                ip : The IPv4 address of the chosen server
-                username: The username that is used to login to the chosen server
-                password: The password that is used to login to the chosen server
                 netmikodict  (dictionary) : Dictionary used by netmiko to connect to the server
                 serverdatabase (str) : Location of the json database
+
+                User input:
+
+                    servername : The name of the chosen server
+                    ip : The IPv4 address of the chosen server
+                    username: The username that is used to login to the chosen server
+                    password: The password that is used to login to the chosen server
         """
 
         self.header = " - Interactive connection - "
@@ -31,10 +34,10 @@ class InteractiveConnection:
 
         self.netmikodict = {}
 
-        self.serverdatabase = os.path.join("resources", "database", "database.json")
+        self.serverdatabase = os.path.join(
+            "resources", "database", "database.json")
 
     def ask_options(self):
-
         """ Method: This method will clear your screen, start an endless loop and ask you to input a server name.
             If the database contains this server name it will grab the IPv4 address and ask you for your username and password.
 
@@ -51,11 +54,11 @@ class InteractiveConnection:
             try:
 
                 servername = input("Please pick a server: ")
-                
+
                 with open(self.serverdatabase, "r") as serverdatabase:
-                        
+
                     databasecontents = json.load(serverdatabase)
-                        
+
                     serverlist = databasecontents["servers"]
 
                     serverdatabase.close()
@@ -64,16 +67,17 @@ class InteractiveConnection:
                     for s in serverlist:
 
                         if s["server-name"] == servername:
-                            
+
                             valid = True
                             self.servername = s["server-name"]
                             self.netmikodict["host"] = s["ip-address"]
 
-
                     if valid == True:
 
-                        self.netmikodict["username"] = input("Please enter your username: ")
-                        self.netmikodict["password"] = input("Please enter your password: ")
+                        self.netmikodict["username"] = input(
+                            "Please enter your username: ")
+                        self.netmikodict["password"] = input(
+                            "Please enter your password: ")
                         self.netmikodict["device_type"] = "linux"
                         print(self.netmikodict)
                         return
@@ -81,35 +85,34 @@ class InteractiveConnection:
                     else:
 
                         raise ValueError("Please pick a valid server!")
-            
+
             except ValueError as e:
 
                 print(e)
 
                 continue
-            
+
             except Exception:
 
                 print(e)
                 exit(1)
 
-            
     def connect_to_server(self):
-
         """ Method: This method will use all your credentials to connect to the remote server.
             You will then be able to send unix commands to the server. Entering 'disconnect' will close the session.
 
             Invalid credentials will raise a NetmikoAuthenticationException.
             Invalid IPv4 or anything else network related will raise a NetMikoTimeoutException.
         """
-        
+
         try:
 
             net_connect = ConnectHandler(**self.netmikodict)
 
             while True:
 
-                command = input("Please enter your command (to quit: enter 'disconnect'): ")
+                command = input(
+                    "Please enter your command (to quit: enter 'disconnect'): ")
 
                 if command == "disconnect":
 
@@ -120,12 +123,12 @@ class InteractiveConnection:
 
                     output = net_connect.send_command(command)
                     print(output)
-                
+
         except netmiko.NetmikoAuthenticationException:
 
             print("Unable to login using your credentials!")
             exit(1)
-        
+
         except netmiko.NetMikoTimeoutException:
 
             print("A timeout occured! The host is not available!")
@@ -135,12 +138,11 @@ class InteractiveConnection:
 
             print(f"Error: {e}")
             exit(1)
-    
-    def send_script(self):
 
+    def send_script(self):
         """ Method: This method will use all your credentials to connect to the remote server.
             You will then be able to send bash scripts to the server. Input can be a relative of full path.
-            
+
             An invalid script will raise an exception.
             Invalid credentials will raise a NetmikoAuthenticationException.
             Invalid IPv4 or anything else network related will raise a NetMikoTimeoutException.
@@ -148,16 +150,16 @@ class InteractiveConnection:
 
         try:
 
-            self.scriptfilelocation = input("Please specify the path of the script: ")
-            self.scriptfilename = os.path.basename(self.scriptfilelocation) 
+            self.scriptfilelocation = input(
+                "Please specify the path of the script: ")
+            self.scriptfilename = os.path.basename(self.scriptfilelocation)
             with open(self.scriptfilelocation, "r") as pvf:
 
                 print(f"{self.scriptfilelocation} was found!")
-                self.scriptfilecontents = pvf.read().splitlines() 
+                self.scriptfilecontents = pvf.read().splitlines()
                 pvf.close()
-            
-            net_connect = ConnectHandler(**self.netmikodict)
 
+            net_connect = ConnectHandler(**self.netmikodict)
 
             output = net_connect.send_config_set(self.scriptfilecontents)
             print(output)
@@ -171,7 +173,7 @@ class InteractiveConnection:
                     if choice == "":
 
                         return
-                    
+
                     else:
 
                         raise ValueError
@@ -182,17 +184,16 @@ class InteractiveConnection:
 
                     continue
 
-                
         except netmiko.NetmikoAuthenticationException:
 
             print("Unable to login using your credentials!")
             exit(1)
-        
+
         except netmiko.NetMikoTimeoutException:
 
             print("A timeout occured! The host is not available!")
             exit(1)
-        
+
         except Exception as e:
 
             print(f"Error: {e}")

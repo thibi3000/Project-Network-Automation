@@ -4,10 +4,10 @@ import ipaddress
 import inspect
 from resources.globalscripts.clearscreen import clearScreen
 
+
 class ServerRegistration:
 
     def __init__(self):
-
         """ Constructor
 
             Attributes: 
@@ -15,13 +15,12 @@ class ServerRegistration:
                 header (str) : Contains the name of the current option
                 serverdatabase (str) : Location of the json database
         """
-        
-        self.serverdatabase = os.path.join("resources", "database", "database.json")
+
+        self.serverdatabase = os.path.join(
+            "resources", "database", "database.json")
         self.header = " - Server Registration - "
 
-
     def register_server(self):
-
         """ Method: This method will clear your screen and ask you for some information to register the server.
             (name, ip, server os)
 
@@ -31,76 +30,75 @@ class ServerRegistration:
         """
 
         clearScreen()
-        
+
         print(self.header)
         print("")
 
         while True:
-        
+
             try:
-            
+
                 servername = input("Please specify the server name: ")
 
                 with open(self.serverdatabase, "r") as serverdatabase:
-                
+
                     databasecontents = json.load(serverdatabase)
-                    
+
                     serverlist = databasecontents["servers"]
-                    
+
                     for server in serverlist:
 
                         if server["server-name"] == servername:
-                            
+
                             serverdatabase.close()
-                            raise Exception("Error: This name is already in use!")
+                            raise Exception(
+                                "Error: This name is already in use!")
 
                     serverdatabase.close()
-                
+
                 break
 
             except json.JSONDecodeError:
-                
-                
+
                 print("Error: serverdatabase.json is empty!")
                 exit(1)
-            
+
             except FileNotFoundError:
 
                 print("Error: serverdatabase.json was not found!")
                 exit(1)
-            
+
             except Exception as e:
 
                 print(e)
 
                 continue
-                
 
         while True:
 
             try:
 
-
-                serveros = input("Please specify the server OS (windows | macos | linux): ")
+                serveros = input(
+                    "Please specify the server OS (windows | macos | linux): ")
 
                 if serveros.lower() not in ["windows", "macos", "linux"]:
 
                     raise Exception("Error: This OS is not supported!")
-                
+
                 break
-            
+
             except Exception as e:
 
                 print(e)
 
                 continue
-        
 
         while True:
 
             try:
 
-                serverip = str(ipaddress.ip_address(input("Please specify the server ip (Example: 192.168.1.1): ")))
+                serverip = str(ipaddress.ip_address(
+                    input("Please specify the server ip (Example: 192.168.1.1): ")))
 
                 break
 
@@ -110,36 +108,33 @@ class ServerRegistration:
 
                 continue
 
-  
         try:
 
             serverdictionary = {
 
                 "server-name": servername,
                 "ip-address": serverip,
-                "os" : serveros.lower()
+                "os": serveros.lower()
 
             }
 
             with open(self.serverdatabase, "r") as serverdatabase:
-                    
+
                 databasecontents = json.load(serverdatabase)
 
                 serverdatabase.close()
-                
+
                 serverlist = databasecontents["servers"]
                 serverlist.append(serverdictionary)
 
-            
             with open(self.serverdatabase, "w") as serverdatabase:
 
                 json.dump(databasecontents, serverdatabase)
 
                 serverdatabase.close()
 
-            
         except json.JSONDecodeError:
-                
+
             print("Error: serverdatabase.json is empty!")
             exit(1)
 
@@ -147,12 +142,11 @@ class ServerRegistration:
 
             print("Error: serverdatabase.json was not found!")
             exit(1)
-            
 
         while True:
 
             try:
-                
+
                 clearScreen()
 
                 print(inspect.cleandoc(f"""
@@ -171,7 +165,7 @@ class ServerRegistration:
                 if choice == "":
 
                     return
-                
+
                 else:
 
                     raise ValueError

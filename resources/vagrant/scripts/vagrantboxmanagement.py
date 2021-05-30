@@ -6,30 +6,46 @@ import inspect
 from resources.globalscripts.clearscreen import clearScreen
 from shutil import rmtree
 
+
 class VagrantBoxManagement:
 
     def __init__(self):
+        """ Constructor
+
+            Attributes: 
+
+                header (str) : Contains the name of the current option
+                serverdatabase (str) : Location of the json database
+                mainpath (str) : Location where main.py gets executed
+                allinteractiveboxes (str) : Location of all the created Vagrant boxes.
+        """
 
         self.header = " - Configured Vagrant boxes - "
-        self.error = ""
 
         self.mainpath = os.getcwd()
-        self.serverdatabase = os.path.join("resources", "database", "database.json")
-        self.allinteractiveboxes = os.path.join("resources", "database", "vagrant", "interactive")
+        self.serverdatabase = os.path.join(
+            "resources", "database", "database.json")
+        self.allinteractiveboxes = os.path.join(
+            "resources", "database", "vagrant", "interactive")
 
     def show_menu(self):
+        """ Method: This method will clear your screen and show you all interactive Vagrant boxes that have been created.
+            It will show the name, status and provider of the box.
 
+            You get the option to change the state of certain box (halt, suspend, start, destroy)
+
+        """
 
         clearScreen()
         print(self.header)
         print("")
-        
+
         try:
 
             with open(self.serverdatabase, "r") as serverdatabase:
 
                 data = json.load(serverdatabase)
-                
+
                 if len(data["vagrantboxes"]) == 0:
 
                     serverdatabase.close()
@@ -44,7 +60,7 @@ class VagrantBoxManagement:
                     if choice == "":
 
                         return
-                    
+
                     else:
 
                         raise ValueError
@@ -59,7 +75,8 @@ class VagrantBoxManagement:
                         boxpath = os.path.join(os.getcwd(), path)
                         os.chdir(boxpath)
 
-                        v = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+                        v = vagrant.Vagrant(
+                            root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
                         status = v.status()[0]
 
                         print(inspect.cleandoc(f"""
@@ -78,13 +95,11 @@ class VagrantBoxManagement:
 
             print(f"Error: {e}!")
             exit(1)
-            
-
 
         while True:
 
             try:
-                
+
                 print(inspect.cleandoc(f"""
 
                 Please input the machine named, followed by the action.
@@ -103,21 +118,21 @@ class VagrantBoxManagement:
                 valid = False
                 for box in data["vagrantboxes"]:
 
-                    if choice.split("-")[0] == box["name"] and choice.split("-")[1] in ["start","suspend","halt","destroy"]:
+                    if choice.split("-")[0] == box["name"] and choice.split("-")[1] in ["start", "suspend", "halt", "destroy"]:
 
                         valid = True
                         action = choice.split("-")[1]
                         validbox = box
 
                 if valid:
-                    
+
                     if action == "start":
-                        
+
                         self.start_box(validbox)
                         os.chdir(self.mainpath)
 
                     elif action == "suspend":
-                        
+
                         self.suspend_box(validbox)
                         os.chdir(self.mainpath)
 
@@ -129,11 +144,11 @@ class VagrantBoxManagement:
                     elif action == "destroy":
 
                         self.destroy_box(validbox)
-                        
+
                         os.chdir(self.mainpath)
 
                         rmtree(validbox["location"])
-                    
+
                 else:
 
                     raise ValueError("Error: Wrong format!")
@@ -142,24 +157,26 @@ class VagrantBoxManagement:
 
                 print(e)
                 continue
-                
+
             except Exception as e:
 
                 print(e)
                 exit(1)
-        
 
-    
     def start_box(self, box):
-        
+        """ Method: Used to start a Vagrant box.
+
+        """
+
         clearScreen()
 
         try:
 
             path = os.path.join(os.getcwd(), box["location"])
             os.chdir(path)
-            start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
-            
+            start = vagrant.Vagrant(
+                root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+
             start.up()
 
             return
@@ -168,8 +185,11 @@ class VagrantBoxManagement:
 
             print(f"Error: {e}")
             return
-        
+
     def halt_box(self, box):
+        """ Method: Used to halt a Vagrant box.
+
+        """
 
         clearScreen()
 
@@ -177,19 +197,22 @@ class VagrantBoxManagement:
 
             path = os.path.join(os.getcwd(), box["location"])
             os.chdir(path)
-            start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
-            
+            start = vagrant.Vagrant(
+                root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+
             start.halt()
 
             return
-        
+
         except Exception as e:
 
             print(f"Error: {e}")
             return
 
-
     def suspend_box(self, box):
+        """ Method: Used to suspend a Vagrant box.
+
+        """
 
         clearScreen()
 
@@ -197,19 +220,22 @@ class VagrantBoxManagement:
 
             path = os.path.join(os.getcwd(), box["location"])
             os.chdir(path)
-            start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
-            
+            start = vagrant.Vagrant(
+                root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+
             start.suspend()
 
             return
-        
+
         except Exception as e:
 
             print(f"Error: {e}")
             return
 
-
     def destroy_box(self, box):
+        """ Method: Used to destroy a Vagrant box.
+
+        """
 
         clearScreen()
 
@@ -217,11 +243,12 @@ class VagrantBoxManagement:
 
             path = os.path.join(os.getcwd(), box["location"])
             os.chdir(path)
-            start = vagrant.Vagrant(root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
+            start = vagrant.Vagrant(
+                root=os.getcwd(), quiet_stdout=False, quiet_stderr=False)
             test = start.halt()
-            
+
             test2 = start.destroy()
-                    
+
             os.chdir(self.mainpath)
 
             with open(self.serverdatabase, 'r') as serverdatabase:
@@ -241,13 +268,8 @@ class VagrantBoxManagement:
                 serverdatabase.close()
 
             return
-        
+
         except Exception as e:
 
             print(f"Error: {e}")
             return
-
-
-
-        
-
