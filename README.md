@@ -5,6 +5,20 @@ Works on Windows, Linux & macOS.
 
 ![Script](https://user-images.githubusercontent.com/23398694/119966980-675e4700-bf9b-11eb-95f5-b9c38a27b634.jpg)
 
+## Features
+
+- Register any LAN host (Windows, macOS, Linux)
+
+- Create your own Vagrant box with our interactive installation wizard
+
+- Manage your Vagrant boxes
+
+- Execute commands or scripts on your registered hosts (SSH)
+
+- Monitor your registered hosts (CPU usage, disk usage, RAM usage and processes)
+
+- Create a predefined Vagrant box (Windows with Git and Chrome or LAMP)
+
 ## Prerequisites
 
 ### Python 3.9.x
@@ -22,7 +36,7 @@ git clone https://github.com/thibi3000/Project-Network-Automation.git
 Highly recommended!
 
 ```bash
-python -m venv venv
+python(3) -m venv venv
 ```
 
 ### Activate venv
@@ -48,13 +62,13 @@ source venv/bin/activate
 ### Update to the latest PIP version
 
 ```bash
-python -m pip install --upgrade pip
+python(3) -m pip install --upgrade pip
 ```
 
 ### Install requirements
 
 ```bash
-python -m pip install -r requirements.txt
+python(3) -m pip install -r requirements.txt
 ```
 
 ### Install Vagrant
@@ -79,7 +93,7 @@ Must be installed on its own.
 ## Usage
 
 ```bash
-python main.py
+python(3) main.py
 ```
 
 ## Documentation
@@ -87,7 +101,7 @@ python main.py
 ### pydoc
 
 ```bash
-python -m pydoc <scriptname>
+python(3) -m pydoc <scriptname>
 ```
 
 ## License
