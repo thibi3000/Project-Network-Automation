@@ -10,11 +10,10 @@ from resources.vagrant.scripts.predefinedvagrantbox import PredefinedVagrantBox
 
 from resources.globalscripts.clearscreen import clearScreen
 
+
 class MainMenu:
 
-    
     def __init__(self):
-
         """ Constructor
 
             Attributes: 
@@ -23,12 +22,11 @@ class MainMenu:
                 error (str) : Contains the latest error message. This will be displayed at the top of
                 your terminal to keep things clean.
         """
-        
+
         self.header = " - Project Network Automation 1 - "
         self.error = ""
 
     def show_menu(self):
-
         """ Method: This method will clear your screen, start an endless loop, show you a list of options
             and will keep running untill you enter a certain option.
             Depending on your choice it will create a new class object from another script or exit.
@@ -40,13 +38,12 @@ class MainMenu:
             Any other input will raise a Valuerror and clear your screen.
         """
 
-    
         while True:
 
             try:
 
                 clearScreen()
-                
+
                 print(inspect.cleandoc(f"""
                         {self.header}
                         {self.error}
@@ -60,42 +57,41 @@ class MainMenu:
                         """))
 
                 choice = int(input("Enter your choice: "))
-                
-                if choice not in range(1,6) or choice == "":
+
+                if choice not in range(1, 6) or choice == "":
 
                     if choice == 6:
-                        
+
                         clearScreen()
 
                         exit("Bye!")
 
                     else:
-                
+
                         raise ValueError
-                
+
                 else:
 
                     if choice == 1:
 
                         serverreg = ServerRegistration()
                         serverreg.register_server()
-                    
+
                     elif choice == 2:
 
                         vagrantboxmanagementsubmenu = VagrantBoxManagementSubMenu()
                         vagrantboxmanagementsubmenu.show_menu()
 
                     elif choice == 3:
-                        
+
                         remoteexecutionsubmenu = RemoteExecutionSubMenu()
                         remoteexecutionsubmenu.show_menu()
-                    
+
                     elif choice == 4:
 
                         remotehostemonitoring = RemoteHostMonitoring()
                         remotehostemonitoring.ask_options()
                         remotehostemonitoring.try_to_connect()
-                        
 
                     elif choice == 5:
 
@@ -111,7 +107,6 @@ class MainMenu:
 class VagrantBoxManagementSubMenu():
 
     def __init__(self):
-
         """ Constructor
 
             Attributes: 
@@ -125,7 +120,6 @@ class VagrantBoxManagementSubMenu():
         self.error = ""
 
     def show_menu(self):
-
         """ Method: This method will clear your screen, start an endless loop, show you a list of options
             and will keep running untill you enter a certain option.
             Depending on your choice it will create a new class object from another script or exit.
@@ -151,19 +145,19 @@ class VagrantBoxManagementSubMenu():
                         2) Manage existing boxes
                         3) Return to main menu
                         """))
-                
+
                 choice = int(input("Enter your choice: "))
-                
-                if choice not in [1,2] or choice == "":
+
+                if choice not in [1, 2] or choice == "":
 
                     if choice == 3:
-                        
+
                         return
 
                     else:
-                
+
                         raise ValueError
-                
+
                 else:
 
                     if choice == 1:
@@ -171,24 +165,21 @@ class VagrantBoxManagementSubMenu():
                         interactivevagrantbox = InteractiveVagrantBox()
                         interactivevagrantbox.ask_for_options()
                         interactivevagrantbox.create_interactive_box()
-                        
-                        
+
                     elif choice == 2:
-                        
+
                         vagrantboxmanagement = VagrantBoxManagement()
                         vagrantboxmanagement.show_menu()
-                        
 
             except ValueError:
 
                 clearScreen()
-                self.error = "* Error: Please enter a valid option!"  
-                         
+                self.error = "* Error: Please enter a valid option!"
+
 
 class RemoteExecutionSubMenu():
 
     def __init__(self):
-
         """ Constructor
 
             Attributes: 
@@ -202,7 +193,6 @@ class RemoteExecutionSubMenu():
         self.error = ""
 
     def show_menu(self):
-
         """ Method: This method will clear your screen, start an endless loop, show you a list of options
             and will keep running untill you enter a certain option.
             Depending on your choice it will create a new class object from another script or exit.
@@ -255,19 +245,15 @@ class RemoteExecutionSubMenu():
                         interactiveconnection.ask_options()
                         interactiveconnection.send_script()
 
-
             except ValueError:
 
                 clearScreen()
                 self.error = "* Error: Please enter a valid option!"
 
 
-
-
 class VagrantPredefinedSubMenu():
 
     def __init__(self):
-
         """ Constructor
 
             Attributes: 
@@ -275,14 +261,13 @@ class VagrantPredefinedSubMenu():
                 header (str) : Contains the menu name
                 error (str) : Contains the latest error message. This will be displayed at the top of
                 your terminal to keep things clean.
-        
+
         """
 
         self.header = " - Please pick a predefined Vagrant box - "
         self.error = ""
 
     def show_menu(self):
-
         """ Method: This method will clear your screen, start an endless loop, show you a list of options
             and will keep running untill you enter a certain option.
             Depending on your choice it will create a new class object from another script or exit.
@@ -332,7 +317,6 @@ class VagrantPredefinedSubMenu():
 
                         lampinstallation = PredefinedVagrantBox()
                         lampinstallation.move_vagrantfile("windows")
-
 
             except ValueError:
 
