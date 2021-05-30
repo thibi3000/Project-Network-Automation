@@ -33,6 +33,12 @@ python -m venv venv
 activate.bat
 ```
 
+or
+
+```bash
+activate.ps1
+```
+
 #### Linux & macOS
 
 ```bash
