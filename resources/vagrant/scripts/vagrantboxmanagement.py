@@ -3,6 +3,7 @@ import os
 import json
 import vagrant
 import inspect
+import sys
 from resources.globalscripts.clearscreen import clearScreen
 from shutil import rmtree
 
@@ -93,8 +94,7 @@ class VagrantBoxManagement:
 
         except Exception as e:
 
-            print(f"Error: {e}!")
-            exit(1)
+            sys.exit(f"Error: {e}!")
 
         while True:
 
@@ -160,8 +160,7 @@ class VagrantBoxManagement:
 
             except Exception as e:
 
-                print(e)
-                exit(1)
+                sys.exit(f"Error: {e}")
 
     def start_box(self, box):
         """ Method: Used to start a Vagrant box.

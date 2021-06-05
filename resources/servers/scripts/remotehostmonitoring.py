@@ -86,11 +86,9 @@ class RemoteHostMonitoring:
 
                 continue
 
-            except Exception:
+            except Exception as e:
 
-                print(e)
-
-                exit(1)
+                sys.exit(f"Error: {e}")
 
     def try_to_connect(self):
         """ Method: This method will first determine your operating system. If you're running this script on Windows you can
@@ -199,19 +197,16 @@ class RemoteHostMonitoring:
 
         except netmiko.NetmikoAuthenticationException:
 
-            print("Unable to login using your credentials!")
-            exit(1)
+            sys.exit("Unable to login using your credentials!")
 
         except netmiko.NetMikoTimeoutException:
 
-            print("A timeout occured! The host is not available!")
-            exit(1)
+            sys.exit("A timeout occured! The host is not available!")
 
         except Exception as e:
-            print(e)
-            exit(1)
+
+            sys.exit(f"Error: {e}")
 
         except wmi.x_wmi:
 
-            print("Something went wrong while connecting to the remote machine.\nPossible reasons: You're trying to connect to a Linux machine, your credentials are wrong, ...")
-            exit(1)
+            sys.exit("Something went wrong while connecting to the remote machine.\nPossible reasons: You're trying to connect to a Linux machine, your credentials are wrong, ...")

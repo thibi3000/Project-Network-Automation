@@ -4,6 +4,7 @@ import ipaddress
 import requests
 import json
 import inspect
+import sys
 from resources.globalscripts.clearscreen import clearScreen
 
 
@@ -131,13 +132,11 @@ class InteractiveVagrantBox:
 
             except json.JSONDecodeError:
 
-                print("Error: serverdatabase.json is empty!")
-                exit(1)
+                sys.exit("Error: serverdatabase.json is empty!")
 
             except FileNotFoundError:
 
-                print("Error: serverdatabase.json was not found!")
-                exit(1)
+                sys.exit("Error: serverdatabase.json was not found!")
 
             except ValueError as e:
 
@@ -352,8 +351,7 @@ class InteractiveVagrantBox:
 
         except Exception as e:
 
-            print(f"Error while initiating your Vagrant box: {e}")
-            exit(1)
+            sys.exit(f"Error while initiating your Vagrant box: {e}")
 
         while True:
 
@@ -425,15 +423,11 @@ class InteractiveVagrantBox:
 
         except FileNotFoundError:
 
-            print(
-                f"Error: Unable to find {os.path.join(self.mainpath, self.interactiveboxlocation, 'Vagrantfile')}")
-            exit(1)
+            sys.exit(f"Error: Unable to find {os.path.join(self.mainpath, self.interactiveboxlocation, 'Vagrantfile')}")
 
         except Exception:
 
-            print(
-                f"Error: Something went wrong while writing the configuration settings!")
-            exit(1)
+            sys.exit(f"Error: Something went wrong while writing the configuration settings!")
 
     def check_vagrant_image(self, image):
         """ Method: This method will check the availability of the given Vagrantimage. We don't users to input false images.
@@ -510,15 +504,12 @@ class InteractiveVagrantBox:
 
         except json.JSONDecodeError:
 
-            print("Serverdatabase.json is empty!")
-            exit(1)
+            sys.exit("Serverdatabase.json is empty!")
 
         except FileNotFoundError:
 
-            print("Serverdatabase.json was not found!")
-            exit(1)
+            sys.exit("Serverdatabase.json was not found!")
 
         except Exception as e:
 
-            print(f"Error: {e}!")
-            exit(1)
+            sys.exit(f"Error: {e}!")

@@ -1,4 +1,5 @@
 import inspect
+import sys
 
 from resources.servers.scripts.serverregistration import ServerRegistration
 from resources.servers.scripts.remotehostmonitoring import RemoteHostMonitoring
@@ -63,8 +64,8 @@ class MainMenu:
                     if choice == 6:
 
                         clearScreen()
-
-                        exit("Bye!")
+                        print("Bye!")
+                        sys.exit(0)
 
                     else:
 

@@ -1,6 +1,7 @@
 import inspect
 import json
 import os
+import sys
 from netmiko import ConnectHandler
 import netmiko
 from resources.globalscripts.clearscreen import clearScreen
@@ -92,10 +93,9 @@ class InteractiveConnection:
 
                 continue
 
-            except Exception:
+            except Exception as e:
 
-                print(e)
-                exit(1)
+                sys.exit(f"Error: {e}")
 
     def connect_to_server(self):
         """ Method: This method will use all your credentials to connect to the remote server.
@@ -126,18 +126,15 @@ class InteractiveConnection:
 
         except netmiko.NetmikoAuthenticationException:
 
-            print("Unable to login using your credentials!")
-            exit(1)
+            sys.exit("Unable to login using your credentials!")
 
         except netmiko.NetMikoTimeoutException:
 
-            print("A timeout occured! The host is not available!")
-            exit(1)
+            sys.exit("A timeout occured! The host is not available!")
 
         except Exception as e:
 
-            print(f"Error: {e}")
-            exit(1)
+            sys.exit(f"Error: {e}")
 
     def send_script(self):
         """ Method: This method will use all your credentials to connect to the remote server.
@@ -186,15 +183,12 @@ class InteractiveConnection:
 
         except netmiko.NetmikoAuthenticationException:
 
-            print("Unable to login using your credentials!")
-            exit(1)
+            sys.exit("Unable to login using your credentials!")
 
         except netmiko.NetMikoTimeoutException:
 
-            print("A timeout occured! The host is not available!")
-            exit(1)
+            sys.exit("A timeout occured! The host is not available!")
 
         except Exception as e:
 
-            print(f"Error: {e}")
-            exit(1)
+            sys.exit(f"Error: {e}")

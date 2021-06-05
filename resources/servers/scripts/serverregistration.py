@@ -2,6 +2,7 @@ import os
 import json
 import ipaddress
 import inspect
+import sys
 from resources.globalscripts.clearscreen import clearScreen
 
 
@@ -60,13 +61,11 @@ class ServerRegistration:
 
             except json.JSONDecodeError:
 
-                print("Error: serverdatabase.json is empty!")
-                exit(1)
+                sys.exit("Error: serverdatabase.json is empty!")
 
             except FileNotFoundError:
 
-                print("Error: serverdatabase.json was not found!")
-                exit(1)
+                sys.exit("Error: serverdatabase.json was not found!")
 
             except Exception as e:
 
@@ -135,13 +134,11 @@ class ServerRegistration:
 
         except json.JSONDecodeError:
 
-            print("Error: serverdatabase.json is empty!")
-            exit(1)
+            sys.exit("Error: serverdatabase.json is empty!")
 
         except FileNotFoundError:
 
-            print("Error: serverdatabase.json was not found!")
-            exit(1)
+            sys.exit("Error: serverdatabase.json was not found!")
 
         while True:
 
